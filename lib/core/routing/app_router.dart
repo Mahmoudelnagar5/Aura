@@ -1,10 +1,10 @@
 import 'package:aura/features/Auth/presentation/views/sign_in_view.dart';
-import 'package:aura/features/home/presentation/views/home_view.dart';
 import 'package:aura/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/Auth/presentation/views/sign_up_view.dart';
+import '../../features/home/presentation/views/widgets/home_layout.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
