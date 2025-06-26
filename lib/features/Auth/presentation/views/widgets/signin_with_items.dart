@@ -3,6 +3,7 @@ import 'package:aura/features/Auth/presentation/manger/auth_cubit/auth_cubit.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:aura/core/utils/assets.dart';
 
 import 'signin_icon.dart';
 
@@ -14,13 +15,13 @@ class SignInWithItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SignInIcon(
-            image: 'assets/google.png',
+            image: Assets.assetsGoogle,
           ),
           SizedBox(
             width: 5.h,
@@ -29,7 +30,7 @@ class SignInWithItems extends StatelessWidget {
             onTap: () {
               context.read<AuthCubit>().loginWithGithub();
             },
-            image: 'assets/github.png',
+            image: Assets.assetsGithub,
           ),
         ],
       ),

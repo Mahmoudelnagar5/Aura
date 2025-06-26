@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:aura/core/utils/assets.dart';
 
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_text_field.dart';
@@ -34,9 +35,9 @@ class SignInViewBody extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: FadeInDown(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 500),
                   child: Image.asset(
-                    'assets/logo.png',
+                    Assets.assetsLogo,
                   ),
                 ),
               ),
@@ -44,7 +45,7 @@ class SignInViewBody extends StatelessWidget {
                 height: 60.h,
               ),
               FadeInLeft(
-                duration: Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 500),
                 child: Text(
                   'Login to your Account',
                   style: GoogleFonts.inter(
@@ -73,7 +74,7 @@ class SignInViewBody extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: FadeInRight(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 500),
                   child: Text(
                     'Forgot Password?',
                     style: GoogleFonts.inter(
@@ -102,7 +103,7 @@ class SignInViewBody extends StatelessWidget {
                 height: 10.h,
               ),
               FadeInUp(
-                duration: Duration(milliseconds: 300),
+                duration: Duration(milliseconds: 500),
                 child: Divider(
                   color: Colors.black54,
                   thickness: 1,
@@ -116,7 +117,7 @@ class SignInViewBody extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: FadeInLeft(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 500),
                   child: Text(
                     'Or Sign in with',
                     style: GoogleFonts.inter(

@@ -13,7 +13,7 @@ class DontHaveAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

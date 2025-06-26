@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:aura/core/utils/assets.dart';
 
 class OnBoardingViewBody extends StatelessWidget {
   const OnBoardingViewBody({
@@ -19,7 +20,7 @@ class OnBoardingViewBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FadeInDown(
-            duration: Duration(milliseconds: 300),
+            duration: Duration(milliseconds: 500),
             child: Expanded(
               child: Column(
                 children: [
@@ -27,9 +28,9 @@ class OnBoardingViewBody extends StatelessWidget {
                     height: 100.h,
                   ),
                   FadeInImage(
-                    fadeInDuration: const Duration(milliseconds: 300),
-                    image: AssetImage('assets/robot.png'),
-                    placeholder: AssetImage('assets/robot.png'),
+                    fadeInDuration: const Duration(milliseconds: 500),
+                    image: AssetImage(Assets.assetsRobot),
+                    placeholder: AssetImage(Assets.assetsRobot),
                   ),
                   Text(
                     'Your AI Study Buddy',

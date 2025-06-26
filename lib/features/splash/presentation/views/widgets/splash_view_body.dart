@@ -3,6 +3,7 @@ import 'package:aura/core/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:svg_flutter/svg_flutter.dart';
+import 'package:aura/core/utils/assets.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({
@@ -26,7 +27,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
       duration: const Duration(seconds: 5),
       child: Center(
         child: SvgPicture.asset(
-          'assets/Aura Logo.svg',
+          Assets.assetsAuraLogo,
         ),
       ),
     );

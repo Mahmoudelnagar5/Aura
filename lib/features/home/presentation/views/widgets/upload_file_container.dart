@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'browse_file_button.dart';
+import 'package:aura/core/utils/assets.dart';
 
 class UploadFileContainer extends StatelessWidget {
   const UploadFileContainer({super.key});
@@ -56,7 +57,7 @@ class UploadFileContainer extends StatelessWidget {
               height: 15.h,
             ),
             Image.asset(
-              'assets/robot2.png',
+              Assets.assetsRobot2,
               height: 120.h,
               width: 100.w,
             ),

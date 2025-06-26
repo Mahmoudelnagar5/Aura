@@ -31,7 +31,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 500),
       child: TextFormField(
         controller: controller,
         autofillHints: autofillHints,

@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:aura/core/utils/assets.dart';
 
 class PickImageWidget extends StatelessWidget {
   const PickImageWidget({super.key});
@@ -8,11 +9,11 @@ class PickImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 500),
       child: CircleAvatar(
         radius: 70.r,
         backgroundColor: Colors.grey.shade200,
-        backgroundImage: const AssetImage("assets/avatar.png"),
+        backgroundImage: const AssetImage(Assets.assetsAvatar),
         child: Stack(
           children: [
             Positioned(

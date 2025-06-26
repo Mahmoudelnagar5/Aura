@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: FadeInUp(
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 500),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(360.w, 50.h),

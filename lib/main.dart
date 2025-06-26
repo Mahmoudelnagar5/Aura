@@ -8,6 +8,8 @@ import 'core/routing/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables from .env file
   await dotenv.load(fileName: '.env');
 
   // Initialize dependency injection
