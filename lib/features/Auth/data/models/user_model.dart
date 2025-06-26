@@ -45,15 +45,3 @@ class UserData {
     };
   }
 }
-
-
-
-
-
-// {
-//     "statusCode": 201,
-//     "message": "User registered successfully.",
-//     "userData": {
-//         "userToken": "5|p289J0NaB2QjtuqG4uKmu1RD1mEVHy6ahZQMZMmP123aea74"
-//     }
-// }

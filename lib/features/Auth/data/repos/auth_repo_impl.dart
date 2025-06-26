@@ -79,6 +79,7 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
+  @override
   Future<Either<Failure, UserModel>> loginWithGoogle() {
     throw UnimplementedError();
   }
@@ -88,7 +89,9 @@ class AuthRepoImpl implements AuthRepo {
     try {
       // Present the auth screen to the user
       final result = await FlutterWebAuth2.authenticate(
-        url: Endpoints.githubSignInUrl,
+        url: Endpoints.authAccount(
+          provideName: 'github',
+        ),
         callbackUrlScheme: "aura",
       );
 
