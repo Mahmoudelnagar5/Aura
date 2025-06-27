@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:aura/core/utils/assets.dart';
+import 'package:aura/core/helpers/database/cache_helper.dart';
+import 'package:aura/core/di/service_locator.dart';
+import 'package:aura/core/utils/constanst.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({
@@ -37,7 +40,13 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     Future.delayed(
       const Duration(seconds: 7),
       () async {
-        context.pushReplacement(AppRouter.onBoardingView);
+        final isLoggedIn =
+            getIt<CacheHelper>().getData(key: CacheKeys.isLoggedIn) ?? false;
+        if (isLoggedIn == true) {
+          context.pushReplacement(AppRouter.homeView);
+        } else {
+          context.pushReplacement(AppRouter.onBoardingView);
+        }
       },
     );
   }
