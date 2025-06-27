@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../features/Auth/data/repos/auth_repo.dart';
 import '../../features/Auth/data/repos/auth_repo_impl.dart';
 import '../../features/Auth/presentation/manger/auth_cubit/auth_cubit.dart';
+import '../../features/home/presentation/manager/cubits/recent_uploads_cubit.dart';
 import '../helpers/database/cache_helper.dart';
 import '../networking/api_consumer.dart';
 import '../networking/dio_consumer.dart';
@@ -34,5 +35,8 @@ Future<void> setupGetIt() async {
   // cubits
   getIt.registerFactory<AuthCubit>(
     () => AuthCubit(getIt<AuthRepo>()),
+  );
+  getIt.registerFactory<RecentUploadsCubit>(
+    () => RecentUploadsCubit(),
   );
 }

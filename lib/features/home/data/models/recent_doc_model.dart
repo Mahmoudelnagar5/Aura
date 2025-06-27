@@ -11,8 +11,11 @@ class RecentDocModel {
   @HiveField(2)
   final DateTime uploadDate;
 
-  RecentDocModel(
-      {required this.name, required this.path, required this.uploadDate});
+  RecentDocModel({
+    required this.name,
+    required this.path,
+    required this.uploadDate,
+  });
 
   Map<String, dynamic> toMap() => {
         'name': name,
