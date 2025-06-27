@@ -92,6 +92,16 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> loginWithGoogle() async {
+    emit(AuthLoading());
+    final result = await authRepo.loginWithGoogle();
+
+    result.fold(
+      (failure) => emit(AuthError(errMessage: failure.errorMessage)),
+      (userModel) => emit(AuthSuccess(userModel: userModel)),
+    );
+  }
+
   void togglePasswordVisibility() {
     isPasswordObscured = !isPasswordObscured;
     emit(PasswordVisibilityUpdated());

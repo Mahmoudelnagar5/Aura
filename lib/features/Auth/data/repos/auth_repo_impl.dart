@@ -80,8 +80,37 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserModel>> loginWithGoogle() {
-    throw UnimplementedError();
+  Future<Either<Failure, UserModel>> loginWithGoogle() async {
+    try {
+      // Present the auth screen to the user
+      final result = await FlutterWebAuth2.authenticate(
+        url: Endpoints.authAccount(
+          provideName: 'google',
+        ),
+        callbackUrlScheme: "aura",
+      );
+
+      // Parse the returned URL for the token
+      final uri = Uri.parse(result);
+      final userToken = uri.queryParameters['userToken'] ?? '';
+      // Create a UserModel from the token
+      final user = UserData(userToken: userToken);
+      final userModel = UserModel(
+        statusCode: 200,
+        message: 'Successfully logged in with Google',
+        userData: user,
+      );
+
+      // Save token to cache
+      await cacheHelper.saveData(
+        key: CacheKeys.token,
+        value: userModel.userData.userToken,
+      );
+
+      return Right(userModel);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override

@@ -21,6 +21,9 @@ class SignInWithItems extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SignInIcon(
+            onTap: () {
+              context.read<AuthCubit>().loginWithGoogle();
+            },
             image: Assets.assetsGoogle,
           ),
           SizedBox(
