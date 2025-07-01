@@ -1,3 +1,4 @@
+import 'package:aura/core/networking/api_failure.dart';
 import 'package:aura/features/Auth/data/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +27,6 @@ class AuthCubit extends Cubit<AuthState> {
   // Login fields
   String? emailLogin;
   String? passwordLogin;
-
-  // Password visibility
-  bool isPasswordObscured = true;
 
   Future<void> performLogin() async {
     if (!_validateForm()) return;
@@ -59,7 +57,14 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(errMessage: failure.errorMessage)),
+      (failure) {
+        if (failure is ServerFailure) {
+          emit(AuthError(
+              errMessage: failure.errorMessage, errors: failure.errors));
+        } else {
+          emit(AuthError(errMessage: failure.errorMessage));
+        }
+      },
       (userModel) => emit(AuthSuccess(userModel: userModel)),
     );
   }
@@ -77,7 +82,14 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(errMessage: failure.errorMessage)),
+      (failure) {
+        if (failure is ServerFailure) {
+          emit(AuthError(
+              errMessage: failure.errorMessage, errors: failure.errors));
+        } else {
+          emit(AuthError(errMessage: failure.errorMessage));
+        }
+      },
       (userModel) => emit(AuthSuccess(userModel: userModel)),
     );
   }
@@ -99,22 +111,6 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (failure) => emit(AuthError(errMessage: failure.errorMessage)),
       (userModel) => emit(AuthSuccess(userModel: userModel)),
-    );
-  }
-
-  void togglePasswordVisibility() {
-    isPasswordObscured = !isPasswordObscured;
-    emit(PasswordVisibilityUpdated());
-  }
-
-  Widget buildVisibilityToggleIcon() {
-    return IconButton(
-      color: const Color.fromARGB(255, 177, 177, 177),
-      icon: Icon(
-        isPasswordObscured ? Icons.visibility : Icons.visibility_off,
-        color: const Color.fromARGB(255, 177, 177, 177),
-      ),
-      onPressed: togglePasswordVisibility,
     );
   }
 }

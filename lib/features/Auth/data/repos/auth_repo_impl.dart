@@ -1,8 +1,7 @@
-import 'package:aura/core/helpers/database/cache_helper.dart';
+import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:aura/core/networking/api_consumer.dart';
 import 'package:aura/core/networking/api_failure.dart';
 import 'package:aura/core/networking/endpoints.dart';
-import 'package:aura/core/utils/constanst.dart';
 import 'package:aura/features/Auth/data/models/login_model.dart';
 import 'package:aura/features/Auth/data/models/sign_up_model.dart';
 import 'package:aura/features/Auth/data/models/user_model.dart';
@@ -14,9 +13,10 @@ import 'auth_repo.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final ApiConsumer apiConsumer;
-  final CacheHelper cacheHelper;
+  final UserCacheHelper userCacheHelper;
 
-  AuthRepoImpl({required this.apiConsumer, required this.cacheHelper});
+  AuthRepoImpl(this.userCacheHelper, {required this.apiConsumer});
+
   @override
   Future<Either<Failure, UserModel>> login(LoginModel loginModel) async {
     try {
@@ -31,11 +31,10 @@ class AuthRepoImpl implements AuthRepo {
 
       final userModel = UserModel.fromJson(response);
 
-      // Save token to cache
-      await cacheHelper.saveData(
-        key: CacheKeys.token,
-        value: userModel.userData.userToken,
-      );
+      // Save token and set login status
+
+      await userCacheHelper.saveUserToken(userModel.userData.userToken);
+      await userCacheHelper.setLoggedIn(true);
 
       return Right(userModel);
     } catch (e) {
@@ -64,11 +63,8 @@ class AuthRepoImpl implements AuthRepo {
 
       final userModel = UserModel.fromJson(response);
 
-      // Save token to cache
-      await cacheHelper.saveData(
-        key: CacheKeys.token,
-        value: userModel.userData.userToken,
-      );
+      await userCacheHelper.saveUserToken(userModel.userData.userToken);
+      await userCacheHelper.setLoggedIn(true);
 
       return Right(userModel);
     } catch (e) {
@@ -101,11 +97,12 @@ class AuthRepoImpl implements AuthRepo {
         userData: user,
       );
 
-      // Save token to cache
-      await cacheHelper.saveData(
-        key: CacheKeys.token,
-        value: userModel.userData.userToken,
-      );
+      // Save token and set login status
+      print(
+          'AuthRepoImpl - Saving token: ${userModel.userData.userToken}'); // Debug print
+      await userCacheHelper.saveUserToken(userModel.userData.userToken);
+      await userCacheHelper.setLoggedIn(true);
+      print('AuthRepoImpl - Token saved and login status set'); // Debug print
 
       return Right(userModel);
     } catch (e) {
@@ -137,11 +134,12 @@ class AuthRepoImpl implements AuthRepo {
         userData: user,
       );
 
-      // Save token to cache
-      await cacheHelper.saveData(
-        key: CacheKeys.token,
-        value: userModel.userData.userToken,
-      );
+      // Save token and set login status
+      print(
+          'AuthRepoImpl - Saving token: ${userModel.userData.userToken}'); // Debug print
+      await userCacheHelper.saveUserToken(userModel.userData.userToken);
+      await userCacheHelper.setLoggedIn(true);
+      print('AuthRepoImpl - Token saved and login status set'); // Debug print
 
       return Right(userModel);
     } catch (e) {

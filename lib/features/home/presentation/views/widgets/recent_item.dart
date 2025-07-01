@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:aura/features/home/data/models/recent_doc_model.dart';
 import 'package:open_file/open_file.dart';
 
+import '../../../../../core/helpers/functions/show_snake_bar.dart';
+
 class RecentItem extends StatelessWidget {
   final RecentDocModel doc;
   const RecentItem({super.key, required this.doc});
@@ -18,13 +20,17 @@ class RecentItem extends StatelessWidget {
         if (path.endsWith('.pdf') || path.endsWith('.docx')) {
           final result = await OpenFile.open(path);
           if (result.type != ResultType.done) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Could not open file: ${result.message}')),
+            showSnackBar(
+              context,
+              'Failed to open file',
+              Colors.red,
             );
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Unsupported file type')),
+          showSnackBar(
+            context,
+            'Unsupported file type',
+            Colors.red,
           );
         }
       },
@@ -46,16 +52,20 @@ class RecentItem extends StatelessWidget {
               size: 25.sp,
             ),
           ),
-          title: Text(
-            doc.name,
-            style: GoogleFonts.inter(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
+          title: FittedBox(
+            alignment: Alignment.centerLeft,
+            fit: BoxFit.scaleDown,
+            child: Text(
+              doc.name,
+              style: GoogleFonts.sora(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           subtitle: Text(
             'Uploaded ${doc.uploadDate.day}/${doc.uploadDate.month}/${doc.uploadDate.year}',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.mali(
               fontSize: 12.sp,
               color: Color(0xff4A709C),
               fontWeight: FontWeight.w400,

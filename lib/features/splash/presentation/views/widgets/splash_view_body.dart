@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:aura/core/utils/assets.dart';
-import 'package:aura/core/helpers/database/cache_helper.dart';
+import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:aura/core/di/service_locator.dart';
-import 'package:aura/core/utils/constanst.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({
@@ -18,16 +17,31 @@ class SplashViewBody extends StatefulWidget {
 }
 
 class _SplashViewBodyState extends State<SplashViewBody> {
+  late UserCacheHelper userCacheHelper;
+  bool _isNavigating = false;
+
   @override
   void initState() {
-    excuteNavigation();
     super.initState();
+    _initializeCacheHelper();
+  }
+
+  Future<void> _initializeCacheHelper() async {
+    try {
+      userCacheHelper = getIt<UserCacheHelper>();
+      await userCacheHelper.init();
+      _executeNavigation();
+    } catch (e) {
+      print('Error initializing cache helper: $e');
+      // Fallback: navigate to onboarding after delay
+      _executeFallbackNavigation();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Roulette(
-      duration: const Duration(seconds: 5),
+    return ZoomInDown(
+      duration: const Duration(seconds: 3),
       child: Center(
         child: SvgPicture.asset(
           Assets.assetsAuraLogo,
@@ -36,15 +50,38 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     );
   }
 
-  void excuteNavigation() {
+  void _executeNavigation() {
     Future.delayed(
-      const Duration(seconds: 7),
+      const Duration(seconds: 4),
       () async {
-        final isLoggedIn =
-            getIt<CacheHelper>().getData(key: CacheKeys.isLoggedIn) ?? false;
-        if (isLoggedIn == true) {
-          context.pushReplacement(AppRouter.homeView);
-        } else {
+        if (_isNavigating) return;
+        _isNavigating = true;
+
+        try {
+          final isLoggedIn = userCacheHelper.isLoggedIn();
+          if (isLoggedIn && mounted) {
+            context.pushReplacement(AppRouter.homeView);
+          } else if (mounted) {
+            context.pushReplacement(AppRouter.onBoardingView);
+          }
+        } catch (e) {
+          print('Navigation error: $e');
+          if (mounted) {
+            context.pushReplacement(AppRouter.onBoardingView);
+          }
+        }
+      },
+    );
+  }
+
+  void _executeFallbackNavigation() {
+    Future.delayed(
+      const Duration(seconds: 3),
+      () async {
+        if (_isNavigating) return;
+        _isNavigating = true;
+
+        if (mounted) {
           context.pushReplacement(AppRouter.onBoardingView);
         }
       },

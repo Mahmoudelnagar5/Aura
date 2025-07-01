@@ -17,14 +17,13 @@ class CustomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CrystalNavigationBar(
       margin: EdgeInsets.zero,
-      marginR: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      marginR: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       enablePaddingAnimation: true,
       currentIndex: currentIndex,
       onTap: onTap,
       borderRadius: 50.r,
       unselectedItemColor: Colors.white70,
       backgroundColor: const Color(0xff390050),
-      outlineBorderColor: Colors.white,
       items: [
         CrystalNavigationBarItem(
           icon: IconlyBold.home,

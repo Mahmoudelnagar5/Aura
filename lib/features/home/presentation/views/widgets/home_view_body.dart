@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,14 +10,18 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: FadeIn(
+          duration: const Duration(milliseconds: 500),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 5.h,
+              ),
               Text(
                 'Upload your document',
                 style: GoogleFonts.inter(
@@ -37,7 +42,7 @@ class HomeViewBody extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              UploadFileContainer(),
+              const UploadFileContainer(),
               SizedBox(
                 height: 16.h,
               ),
@@ -51,7 +56,7 @@ class HomeViewBody extends StatelessWidget {
               SizedBox(
                 height: 5.h,
               ),
-              RecentItemsListView(),
+              const RecentItemsListView(),
             ],
           ),
         ),

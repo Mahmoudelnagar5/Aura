@@ -14,7 +14,8 @@ final class AuthSuccess extends AuthState {
 
 final class AuthError extends AuthState {
   final String errMessage;
-  AuthError({required this.errMessage});
+  final Map<String, dynamic>? errors;
+  AuthError({required this.errMessage, this.errors});
 }
 
 // Form validation state
@@ -22,3 +23,5 @@ final class FormValidationState extends AuthState {}
 
 // Password visibility state
 final class PasswordVisibilityUpdated extends AuthState {}
+
+final class ConfirmPasswordVisibilityUpdated extends AuthState {}

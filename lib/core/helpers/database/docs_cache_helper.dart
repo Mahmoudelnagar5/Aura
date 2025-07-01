@@ -6,7 +6,9 @@ class DocsCacheHelper {
 
   static Future<void> init() async {
     await Hive.initFlutter();
-    Hive.registerAdapter(RecentDocModelAdapter());
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(RecentDocModelAdapter());
+    }
     if (!Hive.isBoxOpen(boxName)) {
       await Hive.openBox(boxName);
     }

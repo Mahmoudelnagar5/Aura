@@ -52,12 +52,14 @@ class BrowseFileButtton extends StatelessWidget {
           horizontal: 20,
           vertical: 10,
         ),
-        child: Text(
-          'Browse File',
-          style: GoogleFonts.inter(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
+        child: FittedBox(
+          child: Text(
+            'Browse File',
+            style: GoogleFonts.inter(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

@@ -12,7 +12,7 @@ class AlreadyHaveAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -35,7 +35,7 @@ class AlreadyHaveAccount extends StatelessWidget {
               style: GoogleFonts.inter(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff390050),
+                color: const Color(0xff390050),
               ),
             ),
           ),

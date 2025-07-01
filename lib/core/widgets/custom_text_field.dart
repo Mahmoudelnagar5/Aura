@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     this.autofillHints,
     this.controller,
     this.validator,
+    this.errorText,
   });
   final String? hintText;
   final Iterable<String>? autofillHints;
@@ -27,11 +28,12 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onIconPressed;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: TextFormField(
         controller: controller,
         autofillHints: autofillHints,
@@ -46,8 +48,11 @@ class CustomTextField extends StatelessWidget {
         obscureText: obscureText,
         onChanged: onChanged,
         decoration: InputDecoration(
-          hoverColor: Color(0xffD9D9D9).withValues(alpha: 0.3),
-          fillColor: Color(0xffD9D9D9).withValues(alpha: 0.3),
+          errorText: errorText,
+          errorMaxLines: 4,
+          // errorMaxLines: 2,
+          hoverColor: const Color(0xffD9D9D9).withOpacity(0.3),
+          fillColor: const Color(0xffD9D9D9).withOpacity(0.3),
           filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -57,11 +62,11 @@ class CustomTextField extends StatelessWidget {
           prefixIcon: prefixIcon != null
               ? IconButton(
                   onPressed: onIconPressed,
-                  color: Color(0xffD9D9D9),
+                  color: const Color(0xffD9D9D9),
                   icon: Icon(
                     prefixIcon,
                     size: 18.sp,
-                    color: Color(0xffD9D9D9),
+                    color: const Color(0xffD9D9D9),
                   ),
                 )
               : null,
@@ -74,13 +79,13 @@ class CustomTextField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: Color(0xffD9D9D9).withValues(alpha: 0.3),
+              color: const Color(0xffD9D9D9).withOpacity(0.3),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
-              color: Color(0xffD9D9D9).withValues(alpha: 0.3),
+              color: const Color(0xffD9D9D9).withOpacity(0.3),
             ),
           ),
         ),

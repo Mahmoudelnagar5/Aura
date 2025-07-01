@@ -18,8 +18,8 @@ class UploadFileContainer extends StatelessWidget {
       dashPattern: const [8, 4],
       child: Container(
         alignment: Alignment.center,
-        height: 310.h,
-        width: 358.w,
+        height: MediaQuery.sizeOf(context).height * 0.4,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadiusDirectional.circular(10.r),
@@ -29,7 +29,7 @@ class UploadFileContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 16.h,
+              height: 14.h,
             ),
             FittedBox(
               child: Text(
@@ -58,8 +58,8 @@ class UploadFileContainer extends StatelessWidget {
             ),
             Image.asset(
               Assets.assetsRobot2,
-              height: 120.h,
-              width: 100.w,
+              height: MediaQuery.sizeOf(context).height * 0.14,
+              width: MediaQuery.sizeOf(context).width * 0.32,
             ),
             SizedBox(
               height: 10.h,

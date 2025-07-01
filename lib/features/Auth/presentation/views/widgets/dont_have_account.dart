@@ -13,7 +13,7 @@ class DontHaveAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -27,14 +27,14 @@ class DontHaveAccount extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              context.pushReplacement(AppRouter.signUpView);
+              context.push(AppRouter.signUpView);
             },
             child: Text(
               ' Sign up',
               style: GoogleFonts.inter(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff390050),
+                color: const Color(0xff390050),
               ),
             ),
           ),

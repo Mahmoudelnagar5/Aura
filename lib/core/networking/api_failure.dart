@@ -9,7 +9,9 @@ class Failure implements Exception {
 
 /// ServerFailure is a class that extends Failure and contains the error message for the API.
 class ServerFailure extends Failure {
-  ServerFailure(super.errorMessage);
+  final Map<String, dynamic>? errors;
+
+  ServerFailure(super.errorMessage, {this.errors});
   factory ServerFailure.fromDioError(DioException dioError) {
     switch (dioError.type) {
       case DioExceptionType.connectionTimeout:
@@ -45,9 +47,10 @@ class ServerFailure extends Failure {
 
       /// this is the case for the bad response from the server
       case DioExceptionType.badResponse:
+        final apiErrorModel = ApiErrorModel.fromJson(dioError.response!.data);
         return ServerFailure.fromResponse(
           statuscode: dioError.response!.statusCode ?? 500,
-          response: ApiErrorModel.fromJson(dioError.response!.data),
+          response: apiErrorModel,
         );
     }
   }
@@ -59,7 +62,7 @@ class ServerFailure extends Failure {
         statuscode == 403 ||
         statuscode == 409 ||
         statuscode == 422) {
-      return ServerFailure(response.errorMessage);
+      return ServerFailure(response.errorMessage, errors: response.errors);
     } else if (statuscode == 404) {
       return ServerFailure(
         response.errorMessage,

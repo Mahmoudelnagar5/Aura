@@ -13,7 +13,11 @@ class UserModel {
     return UserModel(
       statusCode: json['statusCode'],
       message: json['message'],
-      userData: UserData.fromJson(json['userData']),
+      userData: json['userData'] is String && json['userData'].isEmpty
+          ? UserData(
+              userToken:
+                  '') // Create empty UserData if userData is empty string
+          : UserData.fromJson(json['userData']),
     );
   }
 
@@ -35,7 +39,7 @@ class UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      userToken: json['userToken'],
+      userToken: json['userToken'] ?? '',
     );
   }
 

@@ -8,7 +8,7 @@ part of 'recent_doc_model.dart';
 
 class RecentDocModelAdapter extends TypeAdapter<RecentDocModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   RecentDocModel read(BinaryReader reader) {

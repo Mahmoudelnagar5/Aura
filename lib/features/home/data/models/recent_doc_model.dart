@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'recent_doc_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class RecentDocModel {
   @HiveField(0)
   final String name;

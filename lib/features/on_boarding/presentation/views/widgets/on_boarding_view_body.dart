@@ -14,80 +14,80 @@ class OnBoardingViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FadeInDown(
-            duration: Duration(milliseconds: 500),
-            child: Expanded(
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 60.h),
+                    FadeInDown(
+                      duration: const Duration(milliseconds: 500),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            Assets.assetsRobot,
+                            height: 250.h,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(height: 32.h),
+                          Text(
+                            'Your AI Study Buddy',
+                            style: GoogleFonts.splineSans(
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xff0D141C),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'Upload your documents, get summaries, and take quizzes.',
+                            style: GoogleFonts.splineSans(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20.h),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    height: 100.h,
+                  CustomButton(
+                    text: 'Create Account',
+                    colorText: Colors.white,
+                    color: const Color(0xff390050),
+                    onPressed: () {
+                      context.push(AppRouter.signUpView);
+                    },
                   ),
-                  FadeInImage(
-                    fadeInDuration: const Duration(milliseconds: 500),
-                    image: AssetImage(Assets.assetsRobot),
-                    placeholder: AssetImage(Assets.assetsRobot),
-                  ),
-                  Text(
-                    'Your AI Study Buddy',
-                    style: GoogleFonts.splineSans(
-                      fontSize: 25.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff0D141C),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Text(
-                    'Upload your documents, get summaries, and take quizzes.',
-                    style: GoogleFonts.splineSans(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                    textAlign: TextAlign.center,
+                  SizedBox(height: 10.h),
+                  CustomButton(
+                    colorText: const Color(0xff390050),
+                    text: 'Login',
+                    onPressed: () {
+                      context.push(AppRouter.signInView);
+                    },
                   ),
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 70.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-            child: CustomButton(
-              text: 'Create Account',
-              colorText: Colors.white,
-              color: Color(0xff390050),
-              onPressed: () {
-                context.pushReplacement(AppRouter.signUpView);
-              },
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-            child: CustomButton(
-              colorText: Color(0xff390050),
-              text: 'Login',
-              onPressed: () {
-                context.pushReplacement(AppRouter.signInView);
-              },
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
