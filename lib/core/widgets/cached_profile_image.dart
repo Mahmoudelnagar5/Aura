@@ -84,7 +84,7 @@ class CachedProfileImage extends StatelessWidget {
       child: Container(
         width: radius * 2,
         height: radius * 2,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
         ),

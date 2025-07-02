@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/helpers/functions/show_snake_bar.dart';
+
 void showDeleteAccountDialog(
     BuildContext context, DeleteAccountCubit deleteAccountCubit) {
   AwesomeDialog(
@@ -88,22 +90,15 @@ void showDeleteAccountDialog(
                             if (state is DeleteAccountSuccess) {
                               // Navigate to onboarding screen
                               context.pushReplacement(AppRouter.onBoardingView);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text('Account deleted successfully!'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+                              showSnackBar(
+                                  context,
+                                  'Account deleted successfully!',
+                                  Colors.green);
                             } else if (state is DeleteAccountError) {
                               Navigator.of(context)
                                   .pop(); // Close loading dialog
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(state.errMessage),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              showSnackBar(
+                                  context, state.errMessage, Colors.red);
                             }
                           },
                           builder: (context, state) {

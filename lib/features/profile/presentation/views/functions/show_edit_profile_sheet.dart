@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aura/features/profile/data/models/user_profile_model.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/update_profile_cubit.dart';
-import 'package:aura/core/di/service_locator.dart';
-import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:aura/core/widgets/cached_profile_image.dart';
+
+import '../../../../../core/helpers/functions/show_snake_bar.dart';
+import '../widgets/edit_profile_image.dart';
+import '../widgets/edit_text_field.dart';
+import 'show_image_picker_dialog.dart';
 
 void showEditProfileSheet(
   BuildContext context,
@@ -36,19 +36,10 @@ void showEditProfileSheet(
           listener: (context, state) {
             if (state is UpdateProfileSuccess) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Profile updated successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              showSnackBar(
+                  context, 'Profile updated successfully', Colors.green);
             } else if (state is UpdateProfileError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showSnackBar(context, state.errMessage, Colors.red);
             }
           },
           buildWhen: (previous, current) {
@@ -56,7 +47,7 @@ void showEditProfileSheet(
             return current is UpdateProfileLoading ||
                 current is UpdateProfileSuccess ||
                 current is UpdateProfileError ||
-                current is FormValidationState;
+                current is EditProfileImageChanged;
           },
           builder: (context, state) {
             return SingleChildScrollView(
@@ -95,7 +86,7 @@ void showEditProfileSheet(
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          _showImagePickerDialog(context, updateProfileCubit);
+                          showImagePickerDialog(context, updateProfileCubit);
                         },
                         child: EditProfileImage(
                           updateProfileCubit: updateProfileCubit,
@@ -170,142 +161,6 @@ void showEditProfileSheet(
               ),
             );
           },
-        ),
-      );
-    },
-  );
-}
-
-class EditTextField extends StatelessWidget {
-  const EditTextField({
-    super.key,
-    required this.controller,
-    required this.labelText,
-  });
-
-  final TextEditingController controller;
-  final String labelText;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xff390050)),
-        ),
-      ),
-    );
-  }
-}
-
-class EditProfileImage extends StatelessWidget {
-  const EditProfileImage({
-    super.key,
-    required this.updateProfileCubit,
-  });
-
-  final UpdateProfileCubit updateProfileCubit;
-
-  @override
-  Widget build(BuildContext context) {
-    String? imageUrl = getIt<UserCacheHelper>().getUserProfileImage();
-    // Add a dummy parameter to force the cache to update, same as in ProfileView
-    if (imageUrl != null && imageUrl.isNotEmpty) {
-      imageUrl = '$imageUrl?v=${DateTime.now().millisecondsSinceEpoch}';
-    }
-
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(2),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff390050),
-                Color(0xff6A0DAD),
-              ],
-            ),
-          ),
-          child: updateProfileCubit.hasSelectedImage
-              ? CircleAvatar(
-                  radius: 60.r,
-                  backgroundImage:
-                      FileImage(File(updateProfileCubit.selectedImage!.path)),
-                )
-              : CachedProfileImage(
-                  key: ValueKey(imageUrl),
-                  imageUrl: imageUrl,
-                  radius: 60.r,
-                ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: Container(
-            padding: EdgeInsets.all(4.w),
-            decoration: const BoxDecoration(
-              color: Color(0xff390050),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-              size: 16.sp,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-void _showImagePickerDialog(
-    BuildContext context, UpdateProfileCubit updateProfileCubit) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Choose Image Source',
-          style: GoogleFonts.sura(
-            fontWeight: FontWeight.bold,
-            color: const Color(0xff0D141C),
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: Color(0xff390050)),
-              title: Text(
-                'Camera',
-                style: GoogleFonts.mali(color: const Color(0xff0D141C)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                updateProfileCubit.pickImage(source: ImageSource.camera);
-              },
-            ),
-            ListTile(
-              leading:
-                  const Icon(Icons.photo_library, color: Color(0xff390050)),
-              title: Text(
-                'Gallery',
-                style: GoogleFonts.mali(color: const Color(0xff0D141C)),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                updateProfileCubit.pickImage(source: ImageSource.gallery);
-              },
-            ),
-          ],
         ),
       );
     },

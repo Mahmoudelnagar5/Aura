@@ -17,8 +17,8 @@ final class UpdateProfileError extends UpdateProfileState {
   UpdateProfileError({required this.errMessage});
 }
 
-// Form validation state
-final class FormValidationState extends UpdateProfileState {}
+// Edit profile image state
+final class EditProfileImageChanged extends UpdateProfileState {}
 
 // Password visibility states
 final class PasswordVisibilityUpdated extends UpdateProfileState {}

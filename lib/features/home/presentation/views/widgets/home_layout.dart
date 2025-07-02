@@ -24,6 +24,8 @@ class HomeLayout extends StatefulWidget {
 
 class _HomeLayoutState extends State<HomeLayout> {
   int _currentIndex = 0;
+  late final PageController _pageController;
+
   final List<Widget> _pages = [
     const HomeView(),
     const SummaryView(),
@@ -63,6 +65,32 @@ class _HomeLayoutState extends State<HomeLayout> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onNavBarTap(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -85,14 +113,15 @@ class _HomeLayoutState extends State<HomeLayout> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: _appBars[_currentIndex],
-        body: _pages[_currentIndex],
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          physics: const BouncingScrollPhysics(),
+          children: _pages,
+        ),
         bottomNavigationBar: CustomNavBar(
           currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+          onTap: _onNavBarTap,
         ),
       ),
     );

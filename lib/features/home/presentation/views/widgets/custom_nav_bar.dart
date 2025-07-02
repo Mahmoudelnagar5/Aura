@@ -20,8 +20,10 @@ class CustomNavBar extends StatelessWidget {
       marginR: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       enablePaddingAnimation: true,
       currentIndex: currentIndex,
+      paddingR: EdgeInsets.zero,
       onTap: onTap,
       borderRadius: 50.r,
+      height: 50.h,
       unselectedItemColor: Colors.white70,
       backgroundColor: const Color(0xff390050),
       items: [

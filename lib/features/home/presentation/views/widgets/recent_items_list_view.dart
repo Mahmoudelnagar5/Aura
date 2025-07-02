@@ -52,7 +52,7 @@ class _RecentItemsListViewState extends State<RecentItemsListView> {
         } else if (state is RecentUploadsError) {
           return Text('Error: ${state.message}');
         }
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

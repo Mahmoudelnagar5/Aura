@@ -39,13 +39,6 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(ConfirmPasswordVisibilityUpdated());
   }
 
-  // Form validation
-  void validateForm() {
-    if (formKey.currentState?.validate() ?? false) {
-      emit(FormValidationState());
-    }
-  }
-
   // Image picking
   Future<void> pickImage({required ImageSource source}) async {
     try {
@@ -54,7 +47,7 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
 
       if (picked != null) {
         selectedImage = XFile(picked.path);
-        emit(FormValidationState()); // Trigger UI rebuild
+        emit(EditProfileImageChanged()); // Trigger UI rebuild
       }
     } catch (e) {
       emit(UpdateProfileError(errMessage: 'Failed to pick image: $e'));
@@ -147,12 +140,6 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
 
     // Emit success
     emit(UpdateProfileSuccess(userModel: userModel));
-  }
-
-  // Utility methods
-  void clearSelectedImage() {
-    selectedImage = null;
-    emit(FormValidationState());
   }
 
   bool get hasSelectedImage => selectedImage != null;

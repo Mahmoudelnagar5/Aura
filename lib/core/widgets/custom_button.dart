@@ -20,14 +20,14 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: FadeInUp(
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(360.w, 50.h),
             backgroundColor: color ?? Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.r)),
-              side: BorderSide(
+              side: const BorderSide(
                 color: Color(
                   0xff390050,
                 ),

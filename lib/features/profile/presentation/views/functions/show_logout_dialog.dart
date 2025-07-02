@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../routing/app_router.dart';
+import '../../../../../core/routing/app_router.dart';
 
 void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
   AwesomeDialog(

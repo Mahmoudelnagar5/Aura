@@ -105,7 +105,7 @@ class UserProfileRepoImpl implements UserProfileRepo {
     try {
       await apiConsumer.post(Endpoints.logout);
       await userCacheHelper.clearUserData();
-      return Right(null);
+      return const Right(null);
     } catch (e) {
       if (e is Failure) {
         return Left(e);
@@ -119,7 +119,7 @@ class UserProfileRepoImpl implements UserProfileRepo {
     try {
       await apiConsumer.delete(Endpoints.deleteAccount);
       await userCacheHelper.clearUserData();
-      return Right(null);
+      return const Right(null);
     } catch (e) {
       if (e is Failure) {
         return Left(e);

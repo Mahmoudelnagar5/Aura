@@ -41,10 +41,10 @@ class RecentItem extends StatelessWidget {
           leading: Container(
             width: 40.w,
             height: 60.h,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),
-              color: Color(0xffE8EDF5),
+              color: const Color(0xffE8EDF5),
             ),
             child: Icon(
               IconlyLight.document,
@@ -67,7 +67,7 @@ class RecentItem extends StatelessWidget {
             'Uploaded ${doc.uploadDate.day}/${doc.uploadDate.month}/${doc.uploadDate.year}',
             style: GoogleFonts.mali(
               fontSize: 12.sp,
-              color: Color(0xff4A709C),
+              color: const Color(0xff4A709C),
               fontWeight: FontWeight.w400,
             ),
           ),

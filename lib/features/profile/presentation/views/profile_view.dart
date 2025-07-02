@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:aura/core/helpers/database/user_cache_helper.dart';
-import 'package:aura/core/widgets/cached_profile_image.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/update_profile_cubit.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/logout_cubit.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/delete_account_cubit.dart';
+import 'package:aura/features/profile/presentation/views/widgets/image_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -11,7 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/di/service_locator.dart';
-import '../../../../core/helpers/functions/show_logout_dialog.dart';
+import '../../../../core/helpers/functions/show_snake_bar.dart';
+import 'functions/show_logout_dialog.dart';
 import 'functions/show_edit_profile_sheet.dart';
 import 'functions/show_change_password_sheet.dart';
 import 'functions/show_delete_account_dialog.dart';
@@ -26,22 +27,6 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   @override
-/*************  ✨ Windsurf Command ⭐  *************/
-  /// Builds the profile view.
-  ///
-  /// The profile view is a scrollable view that shows the user's profile information,
-  /// as well as a list of menu items for various settings and actions.
-  ///
-  /// The view is divided into three sections: Settings, Account, and About.
-  /// The Settings section contains menu items for changing the app's theme,
-  /// The Account section contains menu items for changing the user's password,
-  /// logging out, and deleting the account.
-  /// The About section contains menu items for viewing the app's about page
-  /// and privacy policy.
-  ///
-  /// The view also shows a loading indicator when the user is logging out or
-  /// deleting their account.
-  /// *****  11290219-a5ea-4b1e-b4cd-ec3d28b51043  ******
   Widget build(BuildContext context) {
     // Cubits are now provided by MultiBlocProvider in home_layout.dart
     final updateProfileCubit = context.read<UpdateProfileCubit>();
@@ -58,50 +43,26 @@ class _ProfileViewState extends State<ProfileView> {
               // to read the new data from the cache.
               setState(() {});
             } else if (state is UpdateProfileError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showSnackBar(context, state.errMessage, Colors.red);
             }
           },
         ),
         BlocListener<LogoutCubit, LogoutState>(
           listener: (context, logoutState) {
             if (logoutState is LogoutSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Logged out successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              showSnackBar(context, 'Logged out successfully!', Colors.green);
             } else if (logoutState is LogoutError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(logoutState.errMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showSnackBar(context, logoutState.errMessage, Colors.red);
             }
           },
         ),
         BlocListener<DeleteAccountCubit, DeleteAccountState>(
           listener: (context, deleteAccountState) {
             if (deleteAccountState is DeleteAccountSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Account deleted successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              showSnackBar(
+                  context, 'Account deleted successfully!', Colors.green);
             } else if (deleteAccountState is DeleteAccountError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(deleteAccountState.errMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showSnackBar(context, deleteAccountState.errMessage, Colors.red);
             }
           },
         ),
@@ -259,34 +220,6 @@ class _ProfileViewState extends State<ProfileView> {
             ),
           ),
         ]),
-      ),
-    );
-  }
-}
-
-class ImageProfile extends StatelessWidget {
-  const ImageProfile({
-    super.key,
-    this.imageUrl,
-  });
-  final String? imageUrl;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff390050),
-            Color(0xff6A0DAD),
-          ],
-        ),
-      ),
-      child: CachedProfileImage(
-        key: ValueKey(imageUrl),
-        imageUrl: imageUrl,
-        radius: 45.r,
       ),
     );
   }

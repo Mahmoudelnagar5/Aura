@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/update_profile_cubit.dart';
 import 'package:aura/core/di/service_locator.dart';
 
+import '../../../../../core/helpers/functions/show_snake_bar.dart';
+
 void showChangePasswordSheet(BuildContext context) {
   final updateProfileCubit = getIt<UpdateProfileCubit>();
 
@@ -21,26 +23,16 @@ void showChangePasswordSheet(BuildContext context) {
           listener: (context, state) {
             if (state is UpdateProfileSuccess) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Password changed successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              showSnackBar(
+                  context, 'Password changed successfully', Colors.green);
             } else if (state is UpdateProfileError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              showSnackBar(context, state.errMessage, Colors.red);
             }
           },
           buildWhen: (previous, current) {
             return current is UpdateProfileLoading ||
                 current is UpdateProfileSuccess ||
                 current is UpdateProfileError ||
-                current is FormValidationState ||
                 current is PasswordVisibilityUpdated ||
                 current is ConfirmPasswordVisibilityUpdated;
           },

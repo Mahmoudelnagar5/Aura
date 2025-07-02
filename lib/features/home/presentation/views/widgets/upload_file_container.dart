@@ -13,7 +13,7 @@ class UploadFileContainer extends StatelessWidget {
     return DottedBorder(
       borderType: BorderType.RRect,
       radius: Radius.circular(10.r),
-      color: Color(0xffCFD9E8),
+      color: const Color(0xffCFD9E8),
       strokeWidth: 2,
       dashPattern: const [8, 4],
       child: Container(
@@ -50,7 +50,7 @@ class UploadFileContainer extends StatelessWidget {
               style: GoogleFonts.inter(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff0D141C),
+                color: const Color(0xff0D141C),
               ),
             ),
             SizedBox(
@@ -64,7 +64,7 @@ class UploadFileContainer extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            BrowseFileButtton(),
+            const BrowseFileButtton(),
           ],
         ),
       ),

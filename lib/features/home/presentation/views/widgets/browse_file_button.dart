@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aura/features/home/presentation/manager/cubits/recent_uploads_cubit.dart';
 import 'package:aura/features/home/data/models/recent_doc_model.dart';
 
+import '../../../../../core/helpers/functions/show_snake_bar.dart';
+
 class BrowseFileButtton extends StatelessWidget {
   const BrowseFileButtton({super.key});
 
@@ -35,9 +37,8 @@ class BrowseFileButtton extends StatelessWidget {
           final doc = RecentDocModel(
               name: fileName, path: filePath, uploadDate: uploadDate);
           context.read<RecentUploadsCubit>().addRecentUpload(doc);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Added to recent uploads: $fileName')),
-          );
+          showSnackBar(
+              context, 'Added to recent uploads: $fileName', Colors.green);
         }
       },
       style: ElevatedButton.styleFrom(

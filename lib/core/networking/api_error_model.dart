@@ -1,15 +1,3 @@
-// {
-//     "statusCode": 422,
-//     "message": "Validation failed.",
-//     "errors": {
-//         "email": [
-//             "The email has already been taken."
-//         ],
-//         "password": [
-//             "The password field confirmation does not match."
-//         ]
-//     }
-// }
 /// ApiErrorModel is a class that contains the error message and status code for the API.
 class ApiErrorModel implements Exception {
   final int statusCode;
@@ -24,12 +12,6 @@ class ApiErrorModel implements Exception {
 
     if (jsonData['errors'] is Map) {
       errors = jsonData['errors'] as Map<String, dynamic>;
-      // You can still construct a general message if you need one elsewhere
-      // final errorMessages =
-      //     errors.values.expand((list) => list as List).join('\n');
-      // if (errorMessages.isNotEmpty) {
-      //   errorMessage = errorMessages;
-      // }
     }
 
     return ApiErrorModel(

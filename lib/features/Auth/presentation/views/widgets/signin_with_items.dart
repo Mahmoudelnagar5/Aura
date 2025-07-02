@@ -15,7 +15,7 @@ class SignInWithItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInDown(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
