@@ -33,11 +33,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<GetUserCubit, GetUserState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is GetUserSuccess) {
-          // Cache the user profile data
+          // Cache the user profile data and print after saving
           final userCacheHelper = getIt<UserCacheHelper>();
-          userCacheHelper.saveUserProfile(state.userProfile);
+          await userCacheHelper.saveUserProfile(state.userProfile);
+          debugPrint('Cached user profile:');
         }
       },
       child: const HomeViewBody(),

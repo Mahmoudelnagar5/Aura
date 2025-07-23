@@ -11,7 +11,6 @@ class SignInView extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<AuthCubit>(),
       child: const Scaffold(
-        backgroundColor: Colors.white,
         body: SignInViewBody(),
       ),
     );

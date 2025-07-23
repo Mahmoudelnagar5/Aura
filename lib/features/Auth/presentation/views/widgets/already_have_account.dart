@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/routing/app_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AlreadyHaveAccount extends StatelessWidget {
   const AlreadyHaveAccount({super.key});
@@ -17,7 +18,7 @@ class AlreadyHaveAccount extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Already have an account?',
+            'already_have_account'.tr(),
             style: GoogleFonts.inter(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -31,11 +32,11 @@ class AlreadyHaveAccount extends StatelessWidget {
               );
             },
             child: Text(
-              'Sign In',
+              'sign_in'.tr(),
               style: GoogleFonts.inter(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xff390050),
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

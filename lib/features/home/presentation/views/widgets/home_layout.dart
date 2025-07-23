@@ -5,15 +5,13 @@ import 'package:aura/features/profile/presentation/manager/user_profile_cubit/up
 import 'package:aura/features/profile/presentation/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/di/service_locator.dart';
 import '../../../../profile/presentation/manager/user_profile_cubit/logout_cubit.dart';
 import '../../../../summary/presentation/views/summary_view.dart';
 import '../../manager/cubits/recent_uploads_cubit.dart';
 import '../../views/home_view.dart';
-import 'custom_app_bar.dart';
 import 'custom_nav_bar.dart';
+import 'package:aura/features/summary/presentation/manger/summary_cubit/summary_cubit.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key});
@@ -30,38 +28,6 @@ class _HomeLayoutState extends State<HomeLayout> {
     const HomeView(),
     const SummaryView(),
     const ProfileView(),
-  ];
-
-  final List<PreferredSizeWidget> _appBars = [
-    const CustomAppBar(),
-    AppBar(
-      title: Text(
-        'Summary',
-        style: GoogleFonts.mali(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w600,
-          color: const Color(0xff0D141C),
-        ),
-      ),
-      // backgroundColor: Color(0xff390050),
-      foregroundColor: Colors.white,
-      centerTitle: true,
-      elevation: 0,
-    ),
-    AppBar(
-      title: Text(
-        'Profile',
-        style: GoogleFonts.mali(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w600,
-          color: const Color(0xff0D141C),
-        ),
-      ),
-      // backgroundColor: Color(0xff390050),
-      foregroundColor: Colors.white,
-      centerTitle: true,
-      elevation: 0,
-    ),
   ];
 
   @override
@@ -109,10 +75,13 @@ class _HomeLayoutState extends State<HomeLayout> {
         BlocProvider(
           create: (context) => getIt<DeleteAccountCubit>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<SummaryCubit>(),
+        ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: _appBars[_currentIndex],
+        extendBody: true,
+        // backgroundColor: Colors.white,
         body: PageView(
           controller: _pageController,
           onPageChanged: _onPageChanged,

@@ -31,11 +31,11 @@ class UserProfileRepoImpl implements UserProfileRepo {
       }
 
       // Check if userData exists
-      if (!response.containsKey('userData')) {
+      if (!response.containsKey('data')) {
         return Left(ServerFailure('No user data in response'));
       }
 
-      final userData = response['userData'];
+      final userData = response['data'];
       // Check if userData is a Map
       if (userData is! Map<String, dynamic>) {
         return Left(ServerFailure('Invalid user data format'));
@@ -61,26 +61,32 @@ class UserProfileRepoImpl implements UserProfileRepo {
 
       if (userProfile.email != null &&
           userProfile.email!.isNotEmpty &&
-          userProfile.email != current?.email)
+          userProfile.email != current?.email) {
         data['email'] = userProfile.email;
+      }
       if (userProfile.firstName != null &&
           userProfile.firstName!.isNotEmpty &&
-          userProfile.firstName != current?.firstName)
+          userProfile.firstName != current?.firstName) {
         data['first_name'] = userProfile.firstName;
+      }
       if (userProfile.lastName != null &&
           userProfile.lastName!.isNotEmpty &&
-          userProfile.lastName != current?.lastName)
+          userProfile.lastName != current?.lastName) {
         data['last_name'] = userProfile.lastName;
+      }
       if (userProfile.password != null &&
           userProfile.password!.isNotEmpty &&
-          userProfile.password != current?.password)
+          userProfile.password != current?.password) {
         data['password'] = userProfile.password;
+      }
       if (userProfile.passwordConfirmation != null &&
           userProfile.passwordConfirmation!.isNotEmpty &&
-          userProfile.passwordConfirmation != current?.passwordConfirmation)
+          userProfile.passwordConfirmation != current?.passwordConfirmation) {
         data['password_confirmation'] = userProfile.passwordConfirmation;
-      if (userProfile.profilePic != null)
+      }
+      if (userProfile.profilePic != null) {
         data['profile_image'] = await uploadImageToAPI(userProfile.profilePic!);
+      }
 
       final response = await apiConsumer.post(
         Endpoints.updateProfile,

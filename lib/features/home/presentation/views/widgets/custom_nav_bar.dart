@@ -1,4 +1,4 @@
-import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,34 +15,49 @@ class CustomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CrystalNavigationBar(
-      margin: EdgeInsets.zero,
-      marginR: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      enablePaddingAnimation: true,
-      currentIndex: currentIndex,
-      paddingR: EdgeInsets.zero,
-      onTap: onTap,
-      borderRadius: 50.r,
-      height: 50.h,
-      unselectedItemColor: Colors.white70,
-      backgroundColor: const Color(0xff390050),
-      items: [
-        CrystalNavigationBarItem(
-          icon: IconlyBold.home,
-          unselectedIcon: IconlyLight.home,
-          selectedColor: Colors.white,
-        ),
-        CrystalNavigationBarItem(
-          icon: IconlyBold.paper,
-          unselectedIcon: IconlyLight.paper,
-          selectedColor: Colors.white,
-        ),
-        CrystalNavigationBarItem(
-          icon: IconlyBold.profile,
-          unselectedIcon: IconlyLight.profile,
-          selectedColor: Colors.white,
-        ),
-      ],
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: DotNavigationBar(
+        currentIndex: currentIndex,
+        onTap: onTap,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.secondary
+            : const Color(0xff390050),
+        enableFloatingNavBar: true,
+        enablePaddingAnimation: true,
+        selectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        unselectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black54
+            : Colors.white70,
+        marginR: EdgeInsets.symmetric(horizontal: 20.w),
+        paddingR: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+        borderRadius: 30.r,
+        // itemPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        items: [
+          DotNavigationBarItem(
+            icon: const Icon(IconlyLight.home),
+            selectedColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(IconlyLight.paper),
+            selectedColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(IconlyLight.profile),
+            selectedColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
+          ),
+        ],
+      ),
     );
   }
 }

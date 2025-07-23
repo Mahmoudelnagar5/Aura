@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:aura/features/profile/presentation/manager/user_profile_cubit/update_profile_cubit.dart';
 import 'package:aura/core/di/service_locator.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../../core/helpers/functions/show_snake_bar.dart';
 
@@ -25,8 +26,6 @@ void showChangePasswordSheet(BuildContext context) {
               Navigator.pop(context);
               showSnackBar(
                   context, 'Password changed successfully', Colors.green);
-            } else if (state is UpdateProfileError) {
-              showSnackBar(context, state.errMessage, Colors.red);
             }
           },
           buildWhen: (previous, current) {
@@ -34,7 +33,8 @@ void showChangePasswordSheet(BuildContext context) {
                 current is UpdateProfileSuccess ||
                 current is UpdateProfileError ||
                 current is PasswordVisibilityUpdated ||
-                current is ConfirmPasswordVisibilityUpdated;
+                current is ConfirmPasswordVisibilityUpdated ||
+                current is CurrentPasswordVisibilityUpdated;
           },
           builder: (context, state) {
             return ChangePasswordSheet(state: state);
@@ -62,6 +62,8 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  Map<String, String> fieldErrors = {};
+
   @override
   void dispose() {
     currentPasswordController.dispose();
@@ -72,6 +74,20 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Extract field errors from state if available
+    if (widget.state is UpdateProfileError) {
+      final errors = (widget.state as UpdateProfileError).errors;
+      if (errors != null) {
+        fieldErrors = Map.fromEntries(errors.entries.map(
+          (e) => MapEntry(e.key, e.value.join('\n')),
+        ));
+      } else {
+        fieldErrors = {};
+      }
+    } else {
+      fieldErrors = {};
+    }
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.only(
@@ -88,8 +104,6 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
             children: [
               _buildHeader(),
               SizedBox(height: 24.h),
-              _buildCurrentPasswordField(),
-              SizedBox(height: 16.h),
               _buildNewPasswordField(),
               SizedBox(height: 16.h),
               _buildConfirmPasswordField(),
@@ -107,42 +121,18 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Change Password',
+          'change_password'.tr(),
           style: GoogleFonts.sura(
             fontWeight: FontWeight.bold,
             fontSize: 18.sp,
-            color: const Color(0xff0D141C),
+            color: Theme.of(context).textTheme.titleLarge?.color,
           ),
         ),
         IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.close, color: Color(0xff390050)),
+          icon: Icon(Icons.close, color: Theme.of(context).colorScheme.primary),
         ),
       ],
-    );
-  }
-
-  Widget _buildCurrentPasswordField() {
-    return TextFormField(
-      controller: currentPasswordController,
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Current Password',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xff390050)),
-        ),
-        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xff390050)),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Current password is required';
-        }
-        return null;
-      },
     );
   }
 
@@ -151,33 +141,39 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
 
     return TextFormField(
       controller: newPasswordController,
-      obscureText: !cubit.isPasswordVisible,
+      obscureText: !cubit.isNewPasswordVisible,
       decoration: InputDecoration(
-        labelText: 'New Password',
+        labelText: 'new_password'.tr(),
+        labelStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xff390050)),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
-        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xff390050)),
+        prefixIcon: Icon(Icons.lock_outline,
+            color: Theme.of(context).colorScheme.primary),
         suffixIcon: IconButton(
           icon: Icon(
-            cubit.isPasswordVisible
+            cubit.isNewPasswordVisible
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
-            color: const Color(0xff390050),
+            color: Theme.of(context).colorScheme.primary,
           ),
-          onPressed: cubit.togglePasswordVisibility,
+          onPressed: cubit.toggleNewPasswordVisibility,
         ),
+        errorText: fieldErrors['password'],
+        errorMaxLines: 3,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'New password is required';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters';
+          return 'new_password_required'.tr();
         }
         return null;
       },
@@ -191,31 +187,37 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
       controller: confirmPasswordController,
       obscureText: !cubit.isConfirmPasswordVisible,
       decoration: InputDecoration(
-        labelText: 'Confirm New Password',
+        labelText: 'confirm_new_password'.tr(),
+        labelStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xff390050)),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
-        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xff390050)),
+        prefixIcon: Icon(Icons.lock_outline,
+            color: Theme.of(context).colorScheme.primary),
         suffixIcon: IconButton(
           icon: Icon(
             cubit.isConfirmPasswordVisible
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
-            color: const Color(0xff390050),
+            color: Theme.of(context).colorScheme.primary,
           ),
           onPressed: cubit.toggleConfirmPasswordVisibility,
         ),
+        errorText: fieldErrors['password_confirmation'],
+        errorMaxLines: 3,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please confirm your new password';
-        }
-        if (value != newPasswordController.text) {
-          return 'Passwords do not match';
+          return 'confirm_new_password_required'.tr();
         }
         return null;
       },
@@ -229,7 +231,7 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
         onPressed:
             widget.state is UpdateProfileLoading ? null : _handleChangePassword,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff390050),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -239,15 +241,15 @@ class _ChangePasswordSheetState extends State<ChangePasswordSheet> {
             ? SizedBox(
                 height: 20.h,
                 width: 20.w,
-                child: const CircularProgressIndicator(
-                  color: Colors.white,
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onPrimary,
                   strokeWidth: 2,
                 ),
               )
             : Text(
-                'Change Password',
+                'change_password'.tr(),
                 style: GoogleFonts.mali(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                 ),

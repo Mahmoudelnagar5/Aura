@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../../core/routing/app_router.dart';
 
@@ -23,7 +24,7 @@ void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
           const SizedBox(height: 20),
           FittedBox(
             child: Text(
-              'Confirm Logout',
+              'confirm_logout'.tr(),
               style: GoogleFonts.sura(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
@@ -34,7 +35,7 @@ void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
           const SizedBox(height: 15),
           FittedBox(
             child: Text(
-              'Are you sure you want to log out?',
+              'are_you_sure_logout'.tr(),
               textAlign: TextAlign.center,
               style: GoogleFonts.mali(
                 fontSize: 17.sp,
@@ -61,7 +62,7 @@ void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
                   ),
                   child: FittedBox(
                     child: Text(
-                      'Cancel',
+                      'cancel'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w600),
@@ -72,9 +73,10 @@ void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
               const SizedBox(width: 15),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context).pop();
                     logoutCubit.logout();
+                    await Future.delayed(const Duration(milliseconds: 500));
                     context.pushReplacement(AppRouter.signInView);
                   },
                   style: ElevatedButton.styleFrom(
@@ -87,7 +89,7 @@ void showLogoutDialog(BuildContext context, dynamic logoutCubit) {
                   ),
                   child: FittedBox(
                     child: Text(
-                      'Logout',
+                      'logout'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w600),

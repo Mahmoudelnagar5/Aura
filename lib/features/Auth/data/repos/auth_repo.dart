@@ -11,6 +11,8 @@ abstract class AuthRepo {
   Future<Either<Failure, UserModel>> register(
     RegisterModel signUpModel,
   );
-  Future<Either<Failure, UserModel>> loginWithGoogle();
-  Future<Either<Failure, UserModel>> loginWithGithub();
+  Future<Either<Failure, UserModel>> emailVerify(
+    String email,
+    String otp,
+  );
 }

@@ -9,14 +9,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/helpers/functions/show_snake_bar.dart';
+import 'about_study_buddy_view.dart';
 import 'functions/show_logout_dialog.dart';
 import 'functions/show_edit_profile_sheet.dart';
 import 'functions/show_change_password_sheet.dart';
 import 'functions/show_delete_account_dialog.dart';
+import 'privacy_policy_view.dart';
 import 'widgets/profile_menu_item.dart';
+import '../../../../core/themes/theme_cubit.dart';
+import '../../../../core/widgets/gradient_background.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -33,6 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
     final logoutCubit = context.read<LogoutCubit>();
     final deleteAccountCubit = context.read<DeleteAccountCubit>();
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return MultiBlocListener(
       listeners: [
         BlocListener<UpdateProfileCubit, UpdateProfileState>(
@@ -42,8 +49,6 @@ class _ProfileViewState extends State<ProfileView> {
               // We just need to trigger a rebuild of this widget
               // to read the new data from the cache.
               setState(() {});
-            } else if (state is UpdateProfileError) {
-              showSnackBar(context, state.errMessage, Colors.red);
             }
           },
         ),
@@ -56,170 +61,294 @@ class _ProfileViewState extends State<ProfileView> {
             }
           },
         ),
-        BlocListener<DeleteAccountCubit, DeleteAccountState>(
-          listener: (context, deleteAccountState) {
-            if (deleteAccountState is DeleteAccountSuccess) {
-              showSnackBar(
-                  context, 'Account deleted successfully!', Colors.green);
-            } else if (deleteAccountState is DeleteAccountError) {
-              showSnackBar(context, deleteAccountState.errMessage, Colors.red);
-            }
-          },
-        ),
       ],
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-            child: FadeIn(
-              duration: const Duration(milliseconds: 500),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ImageProfile(
-                        imageUrl: getIt<UserCacheHelper>()
-                            .getUserProfile()
-                            ?.userProfileImageUrl,
-                      ),
-                      SizedBox(width: 17.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      child: GradientBackground(
+        child: Column(
+          children: [
+            // Custom App Bar for Profile
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SafeArea(
+                bottom: false,
+                child: Text(
+                  'profile'.tr(),
+                  style: GoogleFonts.mali(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            // Content
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  child: FadeIn(
+                    duration: const Duration(milliseconds: 500),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            FittedBox(
-                              child: Text(
-                                '${getIt<UserCacheHelper>().getUserName()}',
-                                style: GoogleFonts.sura(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff0D141C),
-                                ),
+                            ImageProfile(
+                              imageUrl: getIt<UserCacheHelper>()
+                                  .getUserProfile()
+                                  ?.userProfileImageUrl,
+                            ),
+                            SizedBox(width: 17.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FittedBox(
+                                    child: Text(
+                                      '${getIt<UserCacheHelper>().getUserName()}',
+                                      style: GoogleFonts.sura(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge
+                                            ?.color,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  FittedBox(
+                                    child: Text(
+                                      getIt<UserCacheHelper>().getUserEmail() ??
+                                          'No email available',
+                                      style: GoogleFonts.mali(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.color,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            FittedBox(
-                              child: Text(
-                                getIt<UserCacheHelper>().getUserEmail() ??
-                                    'No email available',
-                                style: GoogleFonts.mali(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: const Color(0xff0D141C),
-                                ),
-                              ),
+                            IconButton(
+                              icon: Icon(Icons.edit,
+                                  color: isDark
+                                      ? Theme.of(context).colorScheme.primary
+                                      : const Color(0xff390050)),
+                              onPressed: () {
+                                final userProfile =
+                                    getIt<UserCacheHelper>().getUserProfile();
+                                if (userProfile != null) {
+                                  showEditProfileSheet(
+                                      context, userProfile, updateProfileCubit);
+                                }
+                              },
+                              tooltip: 'Edit Profile',
                             ),
                           ],
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.edit, color: Color(0xff390050)),
-                        onPressed: () {
-                          final userProfile =
-                              getIt<UserCacheHelper>().getUserProfile();
-                          if (userProfile != null) {
-                            showEditProfileSheet(
-                                context, userProfile, updateProfileCubit);
-                          }
-                        },
-                        tooltip: 'Edit Profile',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 32.h),
-                  // Settings Section
-                  Text(
-                    'Settings',
-                    style: GoogleFonts.sura(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff0D141C),
+                        SizedBox(height: 20.h),
+                        // Settings Section
+                        Text(
+                          'settings'.tr(),
+                          style: GoogleFonts.sura(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+
+                        ProfileMenuItem(
+                          title: 'theme_mode'.tr(),
+                          icon: Theme.of(context).brightness == Brightness.dark
+                              ? Icons.nightlight_round
+                              : Icons.wb_sunny,
+                          trailing: DropdownButton<ThemeMode>(
+                            value: context.read<ThemeCubit>().themeMode,
+                            underline: const SizedBox(),
+                            items: [
+                              DropdownMenuItem(
+                                value: ThemeMode.system,
+                                child: Text(
+                                  'system_mode'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: ThemeMode.light,
+                                child: Text(
+                                  'light_mode'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: ThemeMode.dark,
+                                child: Text(
+                                  'dark_mode'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged: (mode) {
+                              if (mode != null) {
+                                context.read<ThemeCubit>().setThemeMode(mode);
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        // Language Switcher
+                        ProfileMenuItem(
+                          title: 'language'.tr(),
+                          icon: Icons.language,
+                          trailing: DropdownButton<Locale>(
+                            value: context.locale,
+                            underline: const SizedBox(),
+                            items: [
+                              DropdownMenuItem(
+                                value: const Locale('en'),
+                                child: Text(
+                                  'english'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: const Locale('ar'),
+                                child: Text(
+                                  'arabic'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            onChanged: (locale) {
+                              if (locale != null) {
+                                context.setLocale(locale);
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        // Account Section
+                        Text(
+                          'account'.tr(),
+                          style: GoogleFonts.sura(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        ProfileMenuItem(
+                          title: 'change_password'.tr(),
+                          icon: Icons.lock_outline,
+                          onTap: () {
+                            showChangePasswordSheet(context);
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        BlocBuilder<LogoutCubit, LogoutState>(
+                          builder: (context, logoutState) {
+                            return ProfileMenuItem(
+                              title: 'logout'.tr(),
+                              color: Colors.orange,
+                              icon: Icons.logout,
+                              onTap: logoutState is LogoutLoading
+                                  ? () {}
+                                  : () {
+                                      showLogoutDialog(context, logoutCubit);
+                                    },
+                            );
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        BlocBuilder<DeleteAccountCubit, DeleteAccountState>(
+                          builder: (context, deleteAccountState) {
+                            return ProfileMenuItem(
+                              title: 'delete_account'.tr(),
+                              icon: IconlyBold.delete,
+                              color: const Color(0xffFF0000),
+                              onTap: deleteAccountState is DeleteAccountLoading
+                                  ? () {}
+                                  : () {
+                                      showDeleteAccountDialog(
+                                          context, deleteAccountCubit);
+                                    },
+                            );
+                          },
+                        ),
+                        SizedBox(height: 20.h),
+                        // About Section
+                        Text(
+                          'about'.tr(),
+                          style: GoogleFonts.sura(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        ProfileMenuItem(
+                          title: 'about_study_buddy'.tr(),
+                          icon: Icons.info_outline,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageTransition(
+                                type: PageTransitionType.fade,
+                                child: const AboutStudyBuddyView(),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        ProfileMenuItem(
+                          title: 'privacy_policy'.tr(),
+                          icon: Icons.privacy_tip_outlined,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageTransition(
+                                type: PageTransitionType.fade,
+                                child: const PrivacyPolicyView(),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 55.h,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    title: 'Dark Mode',
-                    onTap: () {},
-                    icon: Icons.dark_mode_outlined,
-                  ),
-                  // Account Section
-                  Text(
-                    'Account',
-                    style: GoogleFonts.sura(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff0D141C),
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    title: 'Change Password',
-                    icon: Icons.lock_outline,
-                    onTap: () {
-                      showChangePasswordSheet(context);
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  BlocBuilder<LogoutCubit, LogoutState>(
-                    builder: (context, logoutState) {
-                      return ProfileMenuItem(
-                        title: 'Log Out',
-                        color: Colors.orange,
-                        icon: Icons.logout,
-                        onTap: logoutState is LogoutLoading
-                            ? () {}
-                            : () {
-                                showLogoutDialog(context, logoutCubit);
-                              },
-                      );
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  BlocBuilder<DeleteAccountCubit, DeleteAccountState>(
-                    builder: (context, deleteAccountState) {
-                      return ProfileMenuItem(
-                        title: 'Delete Account',
-                        icon: IconlyBold.delete,
-                        color: const Color(0xffFF0000),
-                        onTap: deleteAccountState is DeleteAccountLoading
-                            ? () {}
-                            : () {
-                                showDeleteAccountDialog(
-                                    context, deleteAccountCubit);
-                              },
-                      );
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-                  // About Section
-                  Text(
-                    'About',
-                    style: GoogleFonts.sura(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff0D141C),
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    title: 'About Study Buddy',
-                    icon: Icons.info_outline,
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    title: 'Privacy Policy',
-                    icon: Icons.privacy_tip_outlined,
-                    onTap: () {},
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }

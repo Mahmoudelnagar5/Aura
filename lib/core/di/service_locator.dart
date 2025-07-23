@@ -11,22 +11,28 @@ import '../../features/profile/presentation/manager/user_profile_cubit/update_pr
 import '../../features/profile/presentation/manager/user_profile_cubit/logout_cubit.dart';
 import '../../features/profile/presentation/manager/user_profile_cubit/delete_account_cubit.dart';
 import '../../features/profile/presentation/manager/user_profile_cubit/get_user_cubit.dart';
-import '../helpers/database/cache_helper.dart';
+import '../../features/summary/data/repos/summary_repo.dart';
+import '../../features/summary/data/repos/summary_repo_impl.dart';
+import '../../features/summary/presentation/manger/summary_cubit/summary_cubit.dart';
 import '../helpers/database/user_cache_helper.dart';
 import '../networking/api_consumer.dart';
 import '../networking/dio_consumer.dart';
+import '../../features/home/data/repos/upload_repo_impl.dart';
+import '../../features/home/data/repos/uploads_repo.dart';
+import '../helpers/database/cache_helper.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
-  // Core - Initialize cache helpers first
+  // Register CacheHelper for theme and other shared preferences usage
   getIt.registerLazySingleton<CacheHelper>(() => CacheHelper());
+  // Initialize CacheHelper
+  await getIt<CacheHelper>().init();
+  // Core - Initialize cache helpers first
   getIt.registerLazySingleton<UserCacheHelper>(() => UserCacheHelper());
 
   // Initialize cache helpers
-  await getIt<CacheHelper>().init();
   await getIt<UserCacheHelper>().init();
-
   // Networking - Create after cache helpers are initialized
   getIt.registerLazySingleton<Dio>(() => Dio());
   getIt.registerLazySingleton<ApiConsumer>(
@@ -46,13 +52,19 @@ Future<void> setupGetIt() async {
       userCacheHelper: getIt(),
     ),
   );
+  getIt.registerLazySingleton<SummaryRepo>(
+    () => SummaryRepoImpl(),
+  );
+  getIt.registerLazySingleton<UploadsRepo>(
+    () => UploadRepoImpl(apiConsumer: getIt()),
+  );
 
   // cubits
   getIt.registerFactory<AuthCubit>(
     () => AuthCubit(getIt<AuthRepo>()),
   );
   getIt.registerFactory<RecentUploadsCubit>(
-    () => RecentUploadsCubit(),
+    () => RecentUploadsCubit(uploadsRepo: getIt<UploadsRepo>()),
   );
   getIt.registerFactory<UpdateProfileCubit>(
     () =>
@@ -68,4 +80,5 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<GetUserCubit>(
     () => GetUserCubit(getIt<UserProfileRepo>(), getIt<UserCacheHelper>()),
   );
+  getIt.registerFactory<SummaryCubit>(() => SummaryCubit(getIt<SummaryRepo>()));
 }

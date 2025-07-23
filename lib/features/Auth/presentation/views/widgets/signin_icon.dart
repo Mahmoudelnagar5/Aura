@@ -17,7 +17,7 @@ class SignInIcon extends StatelessWidget {
       child: Container(
         width: 50.w,
         height: 50.h,
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white, // backgroundBlendMode: BlendMode.color,
@@ -27,7 +27,7 @@ class SignInIcon extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: const Offset(0, 3), // changes position of shadow
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../../core/di/service_locator.dart';
 import '../../../../../core/helpers/database/user_cache_helper.dart';
@@ -16,7 +17,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<CustomAppBar> createState() => _CustomAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(84.0);
+  Size get preferredSize => const Size.fromHeight(84.0);
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -28,57 +29,52 @@ class _CustomAppBarState extends State<CustomAppBar> {
         final userName = userCacheHelper.getUserName() ?? '';
         final userImage = userCacheHelper.getUserProfileImage();
 
-        return SafeArea(
+        return FadeIn(
+          duration: const Duration(milliseconds: 500),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: FadeIn(
-              duration: const Duration(milliseconds: 500),
-              child: Row(
-                children: [
-                  CachedProfileImage(
-                    imageUrl: userImage,
-                    radius: 40.r,
-                    backgroundColor: Colors.grey.shade200,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            'Welcome back!',
-                            style: GoogleFonts.mali(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff0D141C),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            userName,
-                            style: GoogleFonts.sora(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xff0D141C),
-                            ),
-                          ),
-                        ),
-                      ],
+            padding: EdgeInsets.only(top: 26.h),
+            child: Row(
+              children: [
+                CachedProfileImage(
+                  imageUrl: userImage,
+                  radius: 36.r,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 16,
                     ),
-                  ),
-                ],
-              ),
+                    FittedBox(
+                      child: Text(
+                        'welcome_back'.tr(),
+                        style: GoogleFonts.mali(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    FittedBox(
+                      child: Text(
+                        userName,
+                        style: GoogleFonts.sora(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.titleLarge?.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );

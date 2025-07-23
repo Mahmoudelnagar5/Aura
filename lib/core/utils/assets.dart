@@ -22,6 +22,10 @@ class Assets {
   /// assets/github.png
   static const String assetsGithub = "assets/github.png";
 
+  /// Assets for assetsDiscorf
+  /// assets/discord.webg
+  static const String assetsDiscord = "assets/discord.png";
+
   /// Assets for assetsGoogle
   /// assets/google.png
   static const String assetsGoogle = "assets/google.png";

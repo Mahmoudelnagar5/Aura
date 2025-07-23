@@ -28,20 +28,25 @@ class EditProfileImage extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(2),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Color(0xff390050),
-                Color(0xff6A0DAD),
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.primary.withOpacity(0.7),
               ],
             ),
           ),
           child: updateProfileCubit.hasSelectedImage
-              ? CircleAvatar(
-                  radius: 60.r,
-                  backgroundImage:
-                      FileImage(File(updateProfileCubit.selectedImage!.path)),
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(60.r),
+                  child: Image.file(
+                    File(updateProfileCubit.selectedImage!.path),
+                    fit: BoxFit.cover,
+                    width: 120.r,
+                    height: 120.r,
+                    filterQuality: FilterQuality.high,
+                  ),
                 )
               : CachedProfileImage(
                   key: ValueKey(imageUrl),
@@ -54,13 +59,13 @@ class EditProfileImage extends StatelessWidget {
           right: 0,
           child: Container(
             padding: EdgeInsets.all(4.w),
-            decoration: const BoxDecoration(
-              color: Color(0xff390050),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.edit,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: 16.sp,
             ),
           ),

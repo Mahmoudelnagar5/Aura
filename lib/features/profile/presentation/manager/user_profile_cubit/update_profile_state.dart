@@ -14,13 +14,16 @@ final class UpdateProfileSuccess extends UpdateProfileState {
 
 final class UpdateProfileError extends UpdateProfileState {
   final String errMessage;
-  UpdateProfileError({required this.errMessage});
+  final Map<String, dynamic>? errors;
+  UpdateProfileError({required this.errMessage, this.errors});
 }
 
 // Edit profile image state
 final class EditProfileImageChanged extends UpdateProfileState {}
 
 // Password visibility states
+final class CurrentPasswordVisibilityUpdated extends UpdateProfileState {}
+
 final class PasswordVisibilityUpdated extends UpdateProfileState {}
 
 final class ConfirmPasswordVisibilityUpdated extends UpdateProfileState {}

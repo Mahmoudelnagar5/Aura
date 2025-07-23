@@ -7,7 +7,30 @@ import '../../features/Auth/presentation/views/sign_up_view.dart';
 import '../../features/home/presentation/views/widgets/home_layout.dart';
 import '../../features/profile/presentation/views/profile_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
-import '../../features/summary/presentation/views/summary_view.dart';
+import '../di/service_locator.dart';
+import '../helpers/database/user_cache_helper.dart';
+import 'package:aura/features/Auth/presentation/views/otp_verfication_view.dart';
+
+// شاشة استقبال التوكن من deep link
+class AuthCallbackScreen extends StatelessWidget {
+  final String? token;
+  final String? provider;
+  const AuthCallbackScreen({super.key, this.token, this.provider});
+
+  @override
+  Widget build(BuildContext context) {
+    if (token != null && token!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        getIt<UserCacheHelper>().saveUserToken(token!);
+        getIt<UserCacheHelper>().setLoggedIn(true);
+        GoRouter.of(context).go(AppRouter.homeView);
+      });
+    }
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+}
 
 abstract class AppRouter {
   static const String splashView = '/';
@@ -16,7 +39,7 @@ abstract class AppRouter {
   static const String signUpView = '/signUpView';
   static const String homeView = '/homeView';
   static const String profileView = '/profileView';
-  static const String summaryView = '/summaryView';
+  static const String authCallback = '/auth/callback';
 
   static final router = GoRouter(
     initialLocation: splashView,
@@ -70,11 +93,25 @@ abstract class AppRouter {
           transitionsBuilder: _transitionsBuilder,
         ),
       ),
+      // مسار استقبال التوكن من deep link
       GoRoute(
-        path: summaryView,
+        path: authCallback,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const SummaryView(),
+          child: AuthCallbackScreen(
+            token: state.uri.queryParameters['token'],
+            provider: state.uri.queryParameters['provider'],
+          ),
+          transitionsBuilder: _transitionsBuilder,
+        ),
+      ),
+      GoRoute(
+        path: '/otp-verification',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: OtpVerificationView(
+            email: state.uri.queryParameters['email'] ?? '',
+          ),
           transitionsBuilder: _transitionsBuilder,
         ),
       ),

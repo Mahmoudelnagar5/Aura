@@ -4,7 +4,7 @@ import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:aura/core/networking/api_failure.dart';
 import '../../../data/models/user_profile_model.dart';
 
 part 'update_profile_state.dart';
@@ -22,16 +22,22 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Password visibility state
-  bool isPasswordVisible = false;
+  bool isCurrentPasswordVisible = false;
+  bool isNewPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
   // Selected image
   XFile? selectedImage;
 
   // Password visibility methods
-  void togglePasswordVisibility() {
-    isPasswordVisible = !isPasswordVisible;
+  void toggleNewPasswordVisibility() {
+    isNewPasswordVisible = !isNewPasswordVisible;
     emit(PasswordVisibilityUpdated());
+  }
+
+  void toggleCurrentPasswordVisibility() {
+    isCurrentPasswordVisible = !isCurrentPasswordVisible;
+    emit(CurrentPasswordVisibilityUpdated());
   }
 
   void toggleConfirmPasswordVisibility() {
@@ -78,7 +84,16 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
       final result = await userProfileRepo.updateProfile(userProfileModel);
 
       result.fold(
-        (failure) => emit(UpdateProfileError(errMessage: failure.errorMessage)),
+        (failure) {
+          if (failure is ServerFailure) {
+            emit(UpdateProfileError(
+              errMessage: failure.errorMessage,
+              errors: failure.errors,
+            ));
+          } else {
+            emit(UpdateProfileError(errMessage: failure.errorMessage));
+          }
+        },
         (userModel) async => await _handleSuccessfulUpdate(userModel),
       );
     } catch (e) {

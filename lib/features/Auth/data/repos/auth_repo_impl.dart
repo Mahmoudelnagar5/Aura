@@ -6,7 +6,6 @@ import 'package:aura/features/Auth/data/models/login_model.dart';
 import 'package:aura/features/Auth/data/models/sign_up_model.dart';
 import 'package:aura/features/Auth/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 import '../../../../core/networking/api_constants.dart';
 import 'auth_repo.dart';
@@ -63,8 +62,8 @@ class AuthRepoImpl implements AuthRepo {
 
       final userModel = UserModel.fromJson(response);
 
-      await userCacheHelper.saveUserToken(userModel.userData.userToken);
-      await userCacheHelper.setLoggedIn(true);
+      // await userCacheHelper.saveUserToken(userModel.userData.userToken);
+      // await userCacheHelper.setLoggedIn(true);
 
       return Right(userModel);
     } catch (e) {
@@ -76,73 +75,28 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserModel>> loginWithGoogle() async {
+  Future<Either<Failure, UserModel>> emailVerify(
+      String email, String otp) async {
     try {
-      // Present the auth screen to the user
-      final result = await FlutterWebAuth2.authenticate(
-        url: Endpoints.authAccount(
-          provideName: 'google',
-        ),
-        callbackUrlScheme: "aura",
+      final response = await apiConsumer.post(
+        Endpoints.emailVerify,
+        data: {
+          ApiConstants.email: email,
+          ApiConstants.verificationCode: otp,
+        },
+        isFromData: true,
       );
 
-      // Parse the returned URL for the token
-      final uri = Uri.parse(result);
-      final userToken = uri.queryParameters['userToken'] ?? '';
-      // Create a UserModel from the token
-      final user = UserData(userToken: userToken);
-      final userModel = UserModel(
-        statusCode: 200,
-        message: 'Successfully logged in with Google',
-        userData: user,
-      );
+      final userModel = UserModel.fromJson(response);
 
-      // Save token and set login status
-      print(
-          'AuthRepoImpl - Saving token: ${userModel.userData.userToken}'); // Debug print
       await userCacheHelper.saveUserToken(userModel.userData.userToken);
       await userCacheHelper.setLoggedIn(true);
-      print('AuthRepoImpl - Token saved and login status set'); // Debug print
 
       return Right(userModel);
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, UserModel>> loginWithGithub() async {
-    try {
-      // Present the auth screen to the user
-      final result = await FlutterWebAuth2.authenticate(
-        url: Endpoints.authAccount(
-          provideName: 'github',
-        ),
-        callbackUrlScheme: "aura",
-      );
-
-      // Extract the query parameters
-      final queryParams = Uri.parse(result).queryParameters;
-
-      // Create a UserModel from the query parameters
-      final user = UserData(
-        userToken: queryParams['token'] ?? '',
-      );
-      final userModel = UserModel(
-        statusCode: 200,
-        message: 'Successfully logged in with GitHub',
-        userData: user,
-      );
-
-      // Save token and set login status
-      print(
-          'AuthRepoImpl - Saving token: ${userModel.userData.userToken}'); // Debug print
-      await userCacheHelper.saveUserToken(userModel.userData.userToken);
-      await userCacheHelper.setLoggedIn(true);
-      print('AuthRepoImpl - Token saved and login status set'); // Debug print
-
-      return Right(userModel);
-    } catch (e) {
+      if (e is Failure) {
+        return Left(e);
+      }
       return Left(ServerFailure(e.toString()));
     }
   }

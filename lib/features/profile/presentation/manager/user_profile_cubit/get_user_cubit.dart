@@ -17,36 +17,15 @@ class GetUserCubit extends Cubit<GetUserState> {
 
   Future<void> getUserProfile() async {
     emit(GetUserLoading());
-
     final result = await userProfileRepo.getProfile();
+    if (isClosed) return;
 
     result.fold(
       (failure) => emit(GetUserError(errMessage: failure.errorMessage)),
       (userProfile) {
-        // Save to cache
         userCacheHelper.saveUserProfile(userProfile);
         emit(GetUserSuccess(userProfile: userProfile));
       },
     );
-  }
-
-  Future<void> getUserProfileFromCache() async {
-    emit(GetUserLoading());
-
-    final userProfile = userCacheHelper.getUserProfile();
-
-    if (userProfile != null) {
-      emit(GetUserSuccess(userProfile: userProfile));
-    } else {
-      emit(GetUserError(errMessage: 'No user profile found in cache'));
-    }
-  }
-
-  Future<void> refreshUserProfile() async {
-    // First try to get from cache for immediate response
-    final cachedProfile = userCacheHelper.getUserProfile();
-    if (cachedProfile != null) {
-      emit(GetUserSuccess(userProfile: cachedProfile));
-    }
   }
 }

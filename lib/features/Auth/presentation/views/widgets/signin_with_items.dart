@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:aura/features/Auth/presentation/manger/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:aura/core/utils/assets.dart';
+import 'package:aura/core/networking/endpoints.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'signin_icon.dart';
 
@@ -11,6 +11,16 @@ class SignInWithItems extends StatelessWidget {
   const SignInWithItems({
     super.key,
   });
+
+  Future<void> _launchOAuthUrl(String provider) async {
+    final url = Endpoints.authAccount(provideName: provider);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      // يمكنك هنا عرض رسالة خطأ للمستخدم
+      print('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +31,22 @@ class SignInWithItems extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SignInIcon(
-            onTap: () {
-              context.read<AuthCubit>().loginWithGoogle();
-            },
+            onTap: () => _launchOAuthUrl('google'),
             image: Assets.assetsGoogle,
           ),
           SizedBox(
             width: 5.h,
           ),
           SignInIcon(
-            onTap: () {
-              context.read<AuthCubit>().loginWithGithub();
-            },
+            onTap: () => _launchOAuthUrl('github'),
             image: Assets.assetsGithub,
+          ),
+          SizedBox(
+            width: 5.h,
+          ),
+          SignInIcon(
+            onTap: () => _launchOAuthUrl('discord'),
+            image: Assets.assetsDiscord,
           ),
         ],
       ),

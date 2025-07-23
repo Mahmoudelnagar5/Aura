@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -40,7 +39,7 @@ class CustomTextField extends StatelessWidget {
         validator: validator ??
             (value) {
               if (value == null || value.isEmpty) {
-                return 'Please fill all fields';
+                return 'please_fill_all_fields'.tr();
               }
               return null;
             },
@@ -50,49 +49,34 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           errorText: errorText,
           errorMaxLines: 4,
-          // errorMaxLines: 2,
-          hoverColor: const Color(0xffD9D9D9).withOpacity(0.3),
-          fillColor: const Color(0xffD9D9D9).withOpacity(0.3),
-          filled: true,
+          labelText: hintText,
+          labelStyle:
+              TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
           ),
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon != null
               ? IconButton(
                   onPressed: onIconPressed,
-                  color: const Color(0xffD9D9D9),
+                  color: Theme.of(context).colorScheme.primary,
                   icon: Icon(
                     prefixIcon,
-                    size: 18.sp,
-                    color: const Color(0xffD9D9D9),
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 )
               : null,
-          hintText: hintText,
-          hintStyle: GoogleFonts.inter(
-            color: Colors.black87,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w400,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: const Color(0xffD9D9D9).withOpacity(0.3),
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: const Color(0xffD9D9D9).withOpacity(0.3),
-            ),
-          ),
-        ),
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'browse_file_button.dart';
 import 'package:aura/core/utils/assets.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class UploadFileContainer extends StatelessWidget {
   const UploadFileContainer({super.key});
@@ -18,51 +19,52 @@ class UploadFileContainer extends StatelessWidget {
       dashPattern: const [8, 4],
       child: Container(
         alignment: Alignment.center,
-        height: MediaQuery.sizeOf(context).height * 0.4,
+        height: MediaQuery.sizeOf(context).height * 0.34,
         width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadiusDirectional.circular(10.r),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 14.h,
+            const SizedBox(
+              height: 8,
             ),
             FittedBox(
               child: Text(
-                'Drag and drop your file here.',
+                'drag_and_drop_file'.tr(),
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.titleLarge?.color,
                 ),
               ),
             ),
-            SizedBox(
-              height: 5.h,
+            const SizedBox(
+              height: 5,
             ),
             Text(
-              'or',
+              'or'.tr(),
               textAlign: TextAlign.center,
               style: GoogleFonts.inter(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xff0D141C),
+                color: Theme.of(context).textTheme.titleSmall?.color,
               ),
             ),
-            SizedBox(
-              height: 15.h,
+            const SizedBox(
+              height: 15,
             ),
             Image.asset(
-              Assets.assetsRobot2,
-              height: MediaQuery.sizeOf(context).height * 0.14,
+              Assets.assetsRobot,
+              height: MediaQuery.sizeOf(context).height * 0.11,
               width: MediaQuery.sizeOf(context).width * 0.32,
             ),
-            SizedBox(
-              height: 10.h,
+            const SizedBox(
+              height: 10,
             ),
             const BrowseFileButtton(),
           ],

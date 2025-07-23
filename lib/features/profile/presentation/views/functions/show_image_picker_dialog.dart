@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../manager/user_profile_cubit/update_profile_cubit.dart';
@@ -12,19 +11,22 @@ void showImagePickerDialog(
       return AlertDialog(
         title: Text(
           'Choose Image Source',
-          style: GoogleFonts.sura(
-            fontWeight: FontWeight.bold,
-            color: const Color(0xff0D141C),
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.camera_alt, color: Color(0xff390050)),
+              leading: Icon(Icons.camera_alt,
+                  color: Theme.of(context).colorScheme.primary),
               title: Text(
                 'Camera',
-                style: GoogleFonts.mali(color: const Color(0xff0D141C)),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -32,11 +34,13 @@ void showImagePickerDialog(
               },
             ),
             ListTile(
-              leading:
-                  const Icon(Icons.photo_library, color: Color(0xff390050)),
+              leading: Icon(Icons.photo_library,
+                  color: Theme.of(context).colorScheme.primary),
               title: Text(
                 'Gallery',
-                style: GoogleFonts.mali(color: const Color(0xff0D141C)),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
               ),
               onTap: () {
                 Navigator.pop(context);

@@ -13,11 +13,11 @@ class UserModel {
     return UserModel(
       statusCode: json['statusCode'],
       message: json['message'],
-      userData: json['userData'] is String && json['userData'].isEmpty
+      userData: json['data'] is String && json['data'].isEmpty
           ? UserData(
               userToken:
                   '') // Create empty UserData if userData is empty string
-          : UserData.fromJson(json['userData']),
+          : UserData.fromJson(json['data']),
     );
   }
 

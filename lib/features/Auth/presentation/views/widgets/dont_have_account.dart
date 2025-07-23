@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DontHaveAccount extends StatelessWidget {
   const DontHaveAccount({
@@ -18,7 +19,7 @@ class DontHaveAccount extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Don\'t have an account?',
+            'dont_have_account'.tr(),
             style: GoogleFonts.inter(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -30,11 +31,11 @@ class DontHaveAccount extends StatelessWidget {
               context.push(AppRouter.signUpView);
             },
             child: Text(
-              ' Sign up',
+              'sign_up'.tr(),
               style: GoogleFonts.inter(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xff390050),
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

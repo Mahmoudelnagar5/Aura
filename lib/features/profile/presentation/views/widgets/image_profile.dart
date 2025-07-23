@@ -11,22 +11,10 @@ class ImageProfile extends StatelessWidget {
   final String? imageUrl;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff390050),
-            Color(0xff6A0DAD),
-          ],
-        ),
-      ),
-      child: CachedProfileImage(
-        key: ValueKey(imageUrl),
-        imageUrl: imageUrl,
-        radius: 45.r,
-      ),
+    return CachedProfileImage(
+      key: ValueKey(imageUrl),
+      imageUrl: imageUrl,
+      radius: 45.r,
     );
   }
 }

@@ -23,13 +23,11 @@ class LogoutCubit extends Cubit<LogoutState> {
         (_) async {
           // Clear user cache
           await userCacheHelper.clearUserData();
-          emit(LogoutSuccess());
+          if (!isClosed) emit(LogoutSuccess());
         },
       );
     } catch (e) {
-      // Even if API fails, clear local cache
-      await userCacheHelper.clearUserData();
-      emit(LogoutError(errMessage: e.toString()));
+      if (!isClosed) emit(LogoutError(errMessage: e.toString()));
     }
   }
 }

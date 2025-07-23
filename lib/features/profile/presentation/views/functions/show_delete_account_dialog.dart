@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../../core/helpers/functions/show_snake_bar.dart';
 
@@ -27,7 +28,7 @@ void showDeleteAccountDialog(
           const SizedBox(height: 20),
           FittedBox(
             child: Text(
-              'Delete Account',
+              'delete_account'.tr(),
               style: GoogleFonts.sura(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ void showDeleteAccountDialog(
           ),
           const SizedBox(height: 15),
           Text(
-            'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.',
+            'delete_account_confirm'.tr(),
             textAlign: TextAlign.center,
             style: GoogleFonts.mali(
               fontSize: 14.sp,
@@ -63,7 +64,7 @@ void showDeleteAccountDialog(
                   ),
                   child: FittedBox(
                     child: Text(
-                      'Cancel',
+                      'cancel'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w600),
@@ -144,7 +145,7 @@ void showDeleteAccountDialog(
                   ),
                   child: FittedBox(
                     child: Text(
-                      'Delete Account',
+                      'delete_account'.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14.sp,
