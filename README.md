@@ -237,7 +237,82 @@ All form validation errors are **surfaced in the UI** via the `AuthError` state.
 
 # 📁 Document Management
 
-> _Coming soon..._
+This section covers the **document management system** in Aura, which handles:
+
+- File uploads  
+- Recent document tracking  
+- Local caching  
+- Document processing workflows  
+
+The system enables users to:
+- Upload PDF documents  
+- View their recent uploads  
+- Integrate with AI-powered summarization features  
+
+---
+
+### 🧩 System Overview
+
+The document management system consists of three main subsystems:
+
+- **File upload handling**  
+- **Recent document management**  
+- **Local document caching**
+
+The system uses the **BLoC/Cubit pattern** for state management and integrates with the **backend API** for document storage and processing.
+
+---
+
+### 🏗️ Document Management Architecture
+
+![Document Management Architecture](https://github.com/user-attachments/assets/942b030d-e775-45dc-97af-1782965bf6ca)
+
+---
+
+### 📤 File Upload System
+
+The file upload system handles file selection, validation, and upload processing through a dedicated button component and file picker integration.
+
+#### File Selection and Upload Process
+
+![File Selection and Upload](https://github.com/user-attachments/assets/aa08626c-8d04-4c2b-87f9-ab9c83c8e8f2)
+
+The `BrowseFileButton` component handles the complete file upload workflow. It restricts file selection to PDF documents only and performs validation before processing.
+
+---
+
+### 💾 Document Caching System
+
+The caching system provides **local storage for document metadata** and enables **offline access** to recent document information.
+
+#### Cache Integration Architecture
+
+![Cache Integration Architecture](https://github.com/user-attachments/assets/18f067cd-8c01-471d-96dd-1bdfc1e327a4)
+
+It maintains two parallel data sources:
+
+| Data Source   | Purpose                      | Usage                              |
+|---------------|------------------------------|-------------------------------------|
+| `docs`        | Remote document data from API | Primary data source for document list |
+| `cacheDocs`   | Local cached metadata         | Backup data and offline support     |
+
+---
+
+### 🔄 State Management Integration
+
+The document management system uses the **BLoC pattern** via `RecentUploadsCubit` to manage document-related state.
+
+#### State Management Features
+
+| Operation       | Trigger                             | State Change                                  |
+|------------------|--------------------------------------|-----------------------------------------------|
+| Initial Load     | `initState()` in `RecentItemsListView` | Calls `loadRecentUploads()`                   |
+| File Upload      | Button press in `BrowseFileButton`     | Calls `uploadDoc()` and `addRecentUpload()`   |
+| Pagination       | User scrolling / load more            | Calls `loadMoreUploads()`                     |
+| Error Handling   | API failures                          | Emits `RecentUploadsError` state              |
+
+The state integrates with the UI using `BlocBuilder` widgets that automatically rebuild when state changes occur.
+
 
 ---
 
