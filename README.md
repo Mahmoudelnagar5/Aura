@@ -7,7 +7,7 @@ This document provides a comprehensive overview of **Aura**, an AI-powered study
 > - [🔐 Authentication System](#-authentication-system)  
 > - [📁 Document Management](#-document-management)  
 > - [🧠 AI Integration](#-ai-integration)  
-> - [🎨 User Interface Components](#-user-interface-components) 
+> - [🎨 User Interface System](#-user-interface-system) 
 
 ---
 
@@ -404,7 +404,57 @@ The system provides visual feedback during AI operations via:
 
 ---
 
-# 🎨 User Interface Components
+# 🎨 User Interface System
 
-> _Coming soon..._
+The **User Interface system** serves as the main application container and navigation hub for authenticated users in the Aura application. It orchestrates the core user experience by managing:
+
+- Navigation between primary views (`Home`, `Summary`, `Profile`)
+- State management across multiple feature modules
+- Theme integration and profile handling
+
+---
+
+### 🧱 Component Architecture
+
+The Home Interface is built around a hierarchical structure of three main components that work together to deliver a cohesive application experience.
+
+**Core Component Hierarchy**  
+<img width="1687" height="394" alt="Core Component Hierarchy" src="https://github.com/user-attachments/assets/885497a7-0e77-4d57-b90d-299bed236240" />
+
+---
+
+### 🧭 Navigation System
+
+The navigation system uses a `PageView` with a custom bottom navigation bar to provide smooth transitions between the three main application sections.
+
+**Navigation Flow**  
+<img width="1691" height="508" alt="Navigation Flow" src="https://github.com/user-attachments/assets/884dbf64-c6a7-4464-a0f8-d27359dcc9ce" />
+
+---
+
+### 🧩 State Management Integration
+
+The Home Interface coordinates multiple `BLoC`/`Cubit` instances through a `MultiBlocProvider` setup, enabling cross-feature state management and shared data access.
+
+**BLoC Provider Architecture**  
+<img width="1692" height="433" alt="BLoC Provider Architecture" src="https://github.com/user-attachments/assets/486abd33-1fe9-4a17-8a73-6f8ebf69bf48" />
+
+---
+
+### 👤 User Profile Management
+
+The `HomeView` implements a specific user profile loading and caching mechanism that ensures user data availability across the app.
+
+<img width="1465" height="568" alt="User Profile Management" src="https://github.com/user-attachments/assets/061912b0-a039-4b12-b5ab-0b22b9cb1dea" />
+
+---
+
+### 🎨 Theme Integration
+
+The `CustomNavBar` provides full theme support with dynamic color adaptation based on the current theme brightness.
+
+| Theme Mode | Background Color      | Selected Item Color | Unselected Item Color |
+|------------|------------------------|----------------------|------------------------|
+| Dark       | `colorScheme.secondary`| `Colors.black`       | `Colors.black54`      |
+| Light      | `Color(0xff390050)`    | `Colors.white`       | `Colors.white70`      |
 
