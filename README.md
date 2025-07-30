@@ -3,6 +3,7 @@
 This document provides a comprehensive overview of **Aura**, an AI-powered study partner application built with Flutter. It covers the application's purpose, key features, technology stack, and high-level system architecture.
 
 > 💡 For detailed information about specific subsystems, refer to the corresponding sections:  
+> - [📚 Overview](#-application-purpose-and-scope)  
 > - [🔐 Authentication System](#-authentication-system)  
 > - [📁 Document Management](#-document-management)  
 > - [🧠 AI Integration](#-ai-integration)  
