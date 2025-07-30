@@ -6,7 +6,7 @@ This document provides a comprehensive overview of **Aura**, an AI-powered study
 > - [📚 Overview](#-application-purpose-and-scope)  
 > - [🔐 Authentication System](#-authentication-system)  
 > - [📁 Document Management](#-document-management)  
-> - [🧠 AI Integration](#-ai-integration)  
+> - [🤖 AI Integration](#-ai-integration)  
 > - [🎨 User Interface System](#-user-interface-system) 
 
 ---
@@ -36,6 +36,18 @@ The system integrates:
 | **User Interface**   | Material Design 3, dark/light themes, internationalization                  |
 | **Session Management** | Persistent login state, user profile management                            |
 | **Cross-platform**   | iOS and Android support with responsive design                              |
+
+---
+
+## 📸 App Demo & Screenshots
+
+### 🎥 Live Demo  
+> ⏳ *Coming Soon*
+
+---
+
+### 🖼️ Screenshots  
+> ⏳ *Coming Soon*
 
 ---
 
