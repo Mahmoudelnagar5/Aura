@@ -232,9 +232,6 @@ All form validation errors are **surfaced in the UI** via the `AuthError` state.
 
 ---
 
-
----
-
 # 📁 Document Management
 
 This section covers the **document management system** in Aura, which handles:
@@ -316,9 +313,94 @@ The state integrates with the UI using `BlocBuilder` widgets that automatically 
 
 ---
 
-# 🧠 AI Integration
+# 🤖 AI Integration
 
-> _Coming soon..._
+This document covers the AI integration system in Aura, which provides intelligent document summarization capabilities using Google's Gemini AI.  
+The system handles:
+
+- Document processing  
+- AI API integration  
+- State management for AI operations  
+- User interface components for displaying AI-generated summaries  
+
+---
+
+### 🧠 AI Architecture Overview
+
+The AI integration system is built around a layered architecture that separates concerns between state management, data processing, and external API communication.
+
+#### Core AI Components
+
+<img width="1428" height="772" alt="AI Architecture" src="https://github.com/user-attachments/assets/f9289346-4402-4b81-aa34-d80eb82820ce" />
+
+---
+
+### 🔁 State Management for AI Operations
+
+The AI integration uses the **BLoC pattern** through `SummaryCubit` to manage the state of summarization operations.
+
+#### State Management Components
+
+| Component        | Purpose                     | Key Methods        |
+|------------------|------------------------------|--------------------|
+| SummaryCubit     | Manages AI operation states | `summarizeDoc()`   |
+| SummaryState     | Base state class             | Abstract state     |
+| SummarySuccess   | Success state with results   | Contains summary, documentId |
+| SummaryFailure   | Error state                  | Contains error, documentId   |
+
+#### State Handling Implementation
+
+The state management implementation includes **document-specific tracking** to handle multiple concurrent operations:
+
+<img width="755" height="772" alt="State Tracking" src="https://github.com/user-attachments/assets/10b4dd94-47bc-43dd-856c-94ace1418f87" />
+
+The system tracks processing state per document using `currentProcessingUrl` to prevent race conditions when multiple documents are processed simultaneously.
+
+---
+
+### 🤝 Gemini API Integration
+
+The application integrates with **Google's Gemini AI** through two primary packages: `flutter_gemini` and `google_generative_ai`.
+
+#### AI Package Dependencies
+
+| Package                | Version  | Purpose                              |
+|------------------------|----------|--------------------------------------|
+| flutter_gemini         | ^3.0.0   | Flutter-specific Gemini integration  |
+| google_generative_ai   | ^0.4.7   | Official Google Generative AI SDK    |
+| http                   | ^1.4.0   | HTTP client for file operations      |
+
+---
+
+### 📦 File Processing Pipeline
+
+The system implements a robust pipeline that handles:
+
+1. **File Download**: From remote URLs using `http.Client`
+2. **Temporary Storage**: Via `getTemporaryDirectory()` for processing
+3. **AI Processing**: Files are sent to Gemini API through the repository layer
+4. **Result Handling**: Success/failure states are propagated via Cubit
+
+---
+
+### ⚠️ Error Handling & User Experience
+
+The AI integration system includes comprehensive **error handling** to provide meaningful feedback to users.
+
+#### Error Handling Strategy
+
+<img width="1548" height="511" alt="Error Handling" src="https://github.com/user-attachments/assets/63b49019-3fc2-4163-a64f-d59a4557a73a" />
+
+---
+
+### 🎨 User Interface States
+
+The system provides visual feedback during AI operations via:
+
+- **Processing State**: Shows `LoadingAnimationWidget.inkDrop`
+- **Success State**: Navigates to `SummarizeView` with the generated summary
+- **Error State**: Displays localized messages using `showSnackBar()`
+
 
 ---
 
