@@ -42,6 +42,7 @@ The system integrates:
 ## 📸 App Demo & Screenshots
 
 ### 🎥 Live Demo  
+https://github.com/user-attachments/assets/37aa3a29-5255-4548-9e97-a690ba71e6e5
 > ⏳ *Coming Soon*
 
 ---
