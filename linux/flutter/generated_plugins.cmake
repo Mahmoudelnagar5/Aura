@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_window
   file_selector_linux
+  gtk
   open_file_linux
   rive_common
   url_launcher_linux

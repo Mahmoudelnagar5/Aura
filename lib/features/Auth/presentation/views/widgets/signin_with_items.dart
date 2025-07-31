@@ -15,10 +15,12 @@ class SignInWithItems extends StatelessWidget {
   Future<void> _launchOAuthUrl(String provider) async {
     final url = Endpoints.authAccount(provideName: provider);
     if (await canLaunchUrl(Uri.parse(url))) {
+      debugPrint('launch $url');
+
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
+      debugPrint('Could not launch $url');
       // يمكنك هنا عرض رسالة خطأ للمستخدم
-      print('Could not launch $url');
     }
   }
 

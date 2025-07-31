@@ -1,6 +1,8 @@
 import 'package:aura/core/themes/dark_theme.dart';
 import 'package:aura/core/themes/light_theme.dart';
+import 'package:aura/core/themes/theme_state.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,8 +37,8 @@ Future<void> main() async {
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('en'),
       child: DevicePreview(
-        enabled: false,
-        // enabled: !kReleaseMode, // Only show device preview in debug mode
+        // enabled: false,
+        enabled: !kReleaseMode, // Only show device preview in debug mode
         builder: (context) => BlocProvider(
           create: (_) => ThemeCubit(),
           child: const Aura(),
@@ -56,7 +58,7 @@ class Aura extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocBuilder<ThemeCubit, ThemeData>(
+        return BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, theme) {
             final themeCubit = context.read<ThemeCubit>();
             return MaterialApp.router(
@@ -65,7 +67,7 @@ class Aura extends StatelessWidget {
               title: 'AURA',
               theme: lightTheme,
               darkTheme: darkTheme,
-              themeMode: themeCubit.themeMode, // <-- Use system mode by default
+              themeMode: themeCubit.getTheme(),
               locale: context.locale,
               supportedLocales: context.supportedLocales,
               localizationsDelegates: context.localizationDelegates,

@@ -14,6 +14,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/helpers/functions/show_snake_bar.dart';
+import '../../../../core/themes/theme_state.dart';
 import 'about_study_buddy_view.dart';
 import 'functions/show_logout_dialog.dart';
 import 'functions/show_edit_profile_sheet.dart';
@@ -167,52 +168,62 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         SizedBox(height: 12.h),
 
-                        ProfileMenuItem(
-                          title: 'theme_mode'.tr(),
-                          icon: Theme.of(context).brightness == Brightness.dark
-                              ? Icons.nightlight_round
-                              : Icons.wb_sunny,
-                          trailing: DropdownButton<ThemeMode>(
-                            value: context.read<ThemeCubit>().themeMode,
-                            underline: const SizedBox(),
-                            items: [
-                              DropdownMenuItem(
-                                value: ThemeMode.system,
-                                child: Text(
-                                  'system_mode'.tr(),
-                                  style: GoogleFonts.mali(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
+                        BlocBuilder<ThemeCubit, ThemeState>(
+                          builder: (context, themeState) {
+                            return ProfileMenuItem(
+                              title: 'theme_mode'.tr(),
+                              icon: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Icons.nightlight_round
+                                  : Icons.wb_sunny,
+                              trailing: DropdownButton<ThemeMode>(
+                                value: ThemeCubit.get(context).getTheme(),
+                                underline: const SizedBox(),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: ThemeMode.system,
+                                    child: Text(
+                                      'system_mode'.tr(),
+                                      style: GoogleFonts.mali(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: ThemeMode.light,
-                                child: Text(
-                                  'light_mode'.tr(),
-                                  style: GoogleFonts.mali(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
+                                  DropdownMenuItem(
+                                    value: ThemeMode.light,
+                                    child: Text(
+                                      'light_mode'.tr(),
+                                      style: GoogleFonts.mali(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              DropdownMenuItem(
-                                value: ThemeMode.dark,
-                                child: Text(
-                                  'dark_mode'.tr(),
-                                  style: GoogleFonts.mali(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
+                                  DropdownMenuItem(
+                                    value: ThemeMode.dark,
+                                    child: Text(
+                                      'dark_mode'.tr(),
+                                      style: GoogleFonts.mali(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
+                                onChanged: (mode) {
+                                  if (mode != null) {
+                                    ThemeCubit.get(context).selectTheme(
+                                      ThemeModeState.values.firstWhere(
+                                        (element) => element.name == mode.name,
+                                        orElse: () => ThemeModeState.system,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
-                            ],
-                            onChanged: (mode) {
-                              if (mode != null) {
-                                context.read<ThemeCubit>().setThemeMode(mode);
-                              }
-                            },
-                          ),
+                            );
+                          },
                         ),
                         SizedBox(height: 12.h),
                         // Language Switcher

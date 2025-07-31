@@ -14,8 +14,8 @@ import 'package:aura/features/Auth/presentation/views/otp_verfication_view.dart'
 // شاشة استقبال التوكن من deep link
 class AuthCallbackScreen extends StatelessWidget {
   final String? token;
-  final String? provider;
-  const AuthCallbackScreen({super.key, this.token, this.provider});
+  // final String? provider;
+  const AuthCallbackScreen({super.key, this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,6 @@ abstract class AppRouter {
           key: state.pageKey,
           child: AuthCallbackScreen(
             token: state.uri.queryParameters['token'],
-            provider: state.uri.queryParameters['provider'],
           ),
           transitionsBuilder: _transitionsBuilder,
         ),

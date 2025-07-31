@@ -86,6 +86,7 @@ class _SignUpViewBodyState extends State<SignUpViewBody> {
             child: Form(
               key: authCubit.formKey,
               autovalidateMode: authCubit.validationMode,
+              // autovalidateMode: AutovalidateMode.onUserInteraction,
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
