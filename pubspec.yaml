@@ -67,7 +67,6 @@ dependencies:
   open_file: ^3.3.2
   page_transition: ^2.2.1
   path_provider: ^2.1.5
-  rive: ^0.13.20
   share_plus: ^11.0.0
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0

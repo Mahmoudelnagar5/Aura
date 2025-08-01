@@ -14,15 +14,18 @@ import 'package:aura/features/Auth/presentation/views/otp_verfication_view.dart'
 // شاشة استقبال التوكن من deep link
 class AuthCallbackScreen extends StatelessWidget {
   final String? token;
-  // final String? provider;
-  const AuthCallbackScreen({super.key, this.token});
+  final String? provider;
+  const AuthCallbackScreen({super.key, this.token, this.provider});
 
   @override
   Widget build(BuildContext context) {
     if (token != null && token!.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        debugPrint('token:from auth callback screen $token');
+        debugPrint('provider: $provider');
         getIt<UserCacheHelper>().saveUserToken(token!);
         getIt<UserCacheHelper>().setLoggedIn(true);
+
         GoRouter.of(context).go(AppRouter.homeView);
       });
     }
@@ -37,7 +40,7 @@ abstract class AppRouter {
   static const String onBoardingView = '/onBoardingView';
   static const String signInView = '/signInView';
   static const String signUpView = '/signUpView';
-  static const String homeView = '/homeView';
+  static const String homeView = '/auth/callback';
   static const String profileView = '/profileView';
   static const String authCallback = '/auth/callback';
 
@@ -94,16 +97,17 @@ abstract class AppRouter {
         ),
       ),
       // مسار استقبال التوكن من deep link
-      GoRoute(
-        path: authCallback,
-        pageBuilder: (context, state) => CustomTransitionPage(
-          key: state.pageKey,
-          child: AuthCallbackScreen(
-            token: state.uri.queryParameters['token'],
-          ),
-          transitionsBuilder: _transitionsBuilder,
-        ),
-      ),
+      // GoRoute(
+      //   path: authCallback,
+      //   pageBuilder: (context, state) => CustomTransitionPage(
+      //     key: state.pageKey,
+      //     child: AuthCallbackScreen(
+      //       token: state.uri.queryParameters['token'],
+      //       provider: state.uri.queryParameters['provider'],
+      //     ),
+      //     transitionsBuilder: _transitionsBuilder,
+      //   ),
+      // ),
       GoRoute(
         path: '/otp-verification',
         pageBuilder: (context, state) => CustomTransitionPage(

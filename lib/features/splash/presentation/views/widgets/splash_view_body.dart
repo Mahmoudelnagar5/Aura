@@ -50,14 +50,22 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     }
   }
 
-  void _handleDeepLink(Uri uri) {
+  void _handleDeepLink(Uri uri) async {
     final token = uri.queryParameters['token'];
     debugPrint("token $token");
-    if (token != null && mounted) {
-      getIt<UserCacheHelper>().saveUserToken(token);
-      getIt<UserCacheHelper>().setLoggedIn(true);
-      context.pushReplacement(AppRouter.homeView);
-    }
+    debugPrint("uri ${uri.path.contains('/auth/callback')}");
+    await getIt<UserCacheHelper>().saveUserToken(token!);
+    await getIt<UserCacheHelper>().setLoggedIn(true);
+    // path of route /auth/callback
+    AppRouter.router.go(AppRouter.homeView);
+    // if (!mounted) return; // ✅ هنا بردو نأمن
+
+    // if (uri.path.contains('/auth/callback')) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     debugPrint("token from deep link $token");
+    //     context.pushReplacement(AppRouter.homeView);
+    //   });
+    // }
   }
 
   Future<void> _initializeCacheHelper() async {
