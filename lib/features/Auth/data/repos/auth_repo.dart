@@ -15,4 +15,7 @@ abstract class AuthRepo {
     String email,
     String otp,
   );
+  Future<Either<Failure, UserModel>> resendEmailVerification(
+    String email,
+  );
 }

@@ -100,7 +100,17 @@ class AuthCubit extends Cubit<AuthState> {
 
     result.fold(
       (failure) => emit(AuthError(errMessage: failure.errorMessage)),
-      (userModel) => emit(AuthSuccess(userModel: userModel)),
+      (userModel) => emit(AuthVerifySuccess(userModel: userModel)),
+    );
+  }
+
+  Future<void> resendEmailVerification(String email) async {
+    emit(AuthResendLoading());
+    final result = await authRepo.resendEmailVerification(email);
+
+    result.fold(
+      (failure) => emit(AuthError(errMessage: failure.errorMessage)),
+      (userModel) => emit(AuthResendSuccess(userModel: userModel)),
     );
   }
 }

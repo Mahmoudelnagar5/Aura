@@ -25,3 +25,15 @@ final class FormValidationState extends AuthState {}
 final class PasswordVisibilityUpdated extends AuthState {}
 
 final class ConfirmPasswordVisibilityUpdated extends AuthState {}
+
+final class AuthVerifySuccess extends AuthState {
+  final UserModel userModel;
+  AuthVerifySuccess({required this.userModel});
+}
+
+final class AuthResendLoading extends AuthState {}
+
+final class AuthResendSuccess extends AuthState {
+  final UserModel userModel;
+  AuthResendSuccess({required this.userModel});
+}

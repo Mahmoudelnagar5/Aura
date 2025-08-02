@@ -11,6 +11,7 @@ class Endpoints {
   static const String deleteAccount = 'user';
   static const String updateProfile = 'user';
   static const String emailVerify = 'email/verify';
+  static const String emailResend = 'email/resend';
   static const String getProfile = 'user';
   static const String documents = 'documents';
 }

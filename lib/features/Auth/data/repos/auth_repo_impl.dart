@@ -100,4 +100,27 @@ class AuthRepoImpl implements AuthRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, UserModel>> resendEmailVerification(
+      String email) async {
+    try {
+      final response = await apiConsumer.post(
+        Endpoints.emailResend,
+        data: {
+          ApiConstants.email: email,
+        },
+        isFromData: true,
+      );
+
+      final userModel = UserModel.fromJson(response);
+
+      return Right(userModel);
+    } catch (e) {
+      if (e is Failure) {
+        return Left(e);
+      }
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

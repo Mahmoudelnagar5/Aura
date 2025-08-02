@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'dart:async';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/routing/app_router.dart';
@@ -118,169 +119,190 @@ class _OtpVerficationBodyState extends State<OtpVerficationBody> {
     final theme = Theme.of(context);
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is AuthVerifySuccess) {
           showSnackBar(context, state.userModel.message, Colors.green);
           GoRouter.of(context).pushReplacement(AppRouter.homeView);
+        } else if (state is AuthResendSuccess) {
+          resendCode();
+          showSnackBar(context, state.userModel.message, Colors.green);
         } else if (state is AuthError) {
           showSnackBar(context, state.errMessage, Colors.red);
         }
       },
       builder: (context, state) {
         bool isVerifying = state is AuthLoading;
-        return GradientBackground(
-          child: Center(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.email_outlined,
-                        size: 64.w, color: theme.colorScheme.primary),
-                    SizedBox(height: 16.h),
-                    Text(
-                      'verify_email'.tr(),
-                      style: GoogleFonts.mali(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'code_sent_to_email'.tr(),
-                      style: GoogleFonts.sora(
-                        fontSize: 16.sp,
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      widget.email,
-                      style: GoogleFonts.sora(
-                        fontSize: 16.sp,
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 24.h),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: OtpTextField(
-                        numberOfFields: 6,
-                        showFieldAsBox: true,
-                        borderRadius: BorderRadius.circular(12.r),
-                        fieldWidth: 45.w,
-                        fieldHeight: 55.h,
-                        cursorColor: theme.colorScheme.primary,
-                        borderColor: theme.colorScheme.primary,
-                        focusedBorderColor: theme.colorScheme.onSurface,
-                        enabledBorderColor: theme.colorScheme.primary,
-                        textStyle: GoogleFonts.cairo(
-                          fontSize: 20.sp,
+        return ModalProgressHUD(
+          inAsyncCall: state is AuthResendLoading,
+          child: GradientBackground(
+            child: Center(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.email_outlined,
+                          size: 64.w, color: theme.colorScheme.primary),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'verify_email'.tr(),
+                        style: GoogleFonts.mali(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
                           color: theme.colorScheme.onSurface,
                         ),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        onCodeChanged: (String code) {
-                          setState(() {
-                            otpCode = code;
-                          });
-                        },
-                        onSubmit: (String code) {
-                          setState(() {
-                            otpCode = code;
-                          });
-                        },
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    SizedBox(height: 14.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.timer_outlined,
-                            size: 23.w,
-                            color: isCodeExpired
-                                ? Colors.red
-                                : theme.colorScheme.primary),
-                        const SizedBox(width: 6),
-                        Text(
-                          getCodeExpireText(),
-                          style: GoogleFonts.sora(
-                            fontSize: 14.sp,
-                            color: isCodeExpired
-                                ? Colors.red
-                                : theme.colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    GestureDetector(
-                      onTap: isResendEnabled
-                          ? () {
-                              resendCode();
-                              // Call your resend logic here
-                            }
-                          : null,
-                      child: Text(
-                        getResendText(),
+                      SizedBox(height: 8.h),
+                      Text(
+                        'code_sent_to_email'.tr(),
                         style: GoogleFonts.sora(
-                          color: isResendEnabled
-                              ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurface.withOpacity(0.7),
-                          fontSize: 14.sp,
-                          decorationColor: theme.colorScheme.primary,
-                          decoration:
-                              isResendEnabled ? TextDecoration.underline : null,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        widget.email,
+                        style: GoogleFonts.sora(
+                          fontSize: 16.sp,
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 24.h),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: OtpTextField(
+                          numberOfFields: 6,
+                          showFieldAsBox: true,
+                          borderRadius: BorderRadius.circular(12.r),
+                          fieldWidth: 45.w,
+                          fieldHeight: 55.h,
+                          cursorColor: theme.colorScheme.primary,
+                          borderColor: theme.colorScheme.primary,
+                          focusedBorderColor: theme.colorScheme.onSurface,
+                          enabledBorderColor: theme.colorScheme.primary,
+                          textStyle: GoogleFonts.cairo(
+                            fontSize: 20.sp,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          onCodeChanged: (String code) {
+                            setState(() {
+                              otpCode = code;
+                            });
+                          },
+                          onSubmit: (String code) {
+                            setState(() {
+                              otpCode = code;
+                            });
+                          },
                         ),
                       ),
-                    ),
-                    SizedBox(height: 24.h),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48.h,
-                      child: ElevatedButton(
-                        onPressed:
-                            isVerifying || otpCode.length != 6 || isCodeExpired
+                      SizedBox(height: 14.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.timer_outlined,
+                              size: 23.w,
+                              color: isCodeExpired
+                                  ? Colors.red
+                                  : theme.colorScheme.primary),
+                          const SizedBox(width: 6),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              getCodeExpireText(),
+                              style: GoogleFonts.sora(
+                                fontSize: 14.sp,
+                                color: isCodeExpired
+                                    ? Colors.red
+                                    : theme.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      GestureDetector(
+                        onTap: isResendEnabled
+                            ? () {
+                                context
+                                    .read<AuthCubit>()
+                                    .resendEmailVerification(widget.email);
+                              }
+                            : state is AuthLoading
                                 ? null
-                                : () {
-                                    context
-                                        .read<AuthCubit>()
-                                        .emailVerify(widget.email, otpCode);
-                                  },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                                : null,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            getResendText(),
+                            style: GoogleFonts.sora(
+                              color: isResendEnabled
+                                  ? theme.colorScheme.primary
+                                  : theme.colorScheme.onSurface
+                                      .withOpacity(0.7),
+                              fontSize: 14.sp,
+                              decorationColor: theme.colorScheme.primary,
+                              decoration: isResendEnabled
+                                  ? TextDecoration.underline
+                                  : null,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        child: isVerifying
-                            ? SizedBox(
-                                width: 24.w,
-                                height: 24.w,
-                                child: CircularProgressIndicator(
-                                  color: theme.colorScheme.onPrimary,
-                                  strokeWidth: 2.5,
-                                ),
-                              )
-                            : Text(
-                                'verify'.tr(),
-                                style: GoogleFonts.mali(
-                                  fontSize: 18.sp,
-                                  color: theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 24.h),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48.h,
+                        child: ElevatedButton(
+                          onPressed: isVerifying ||
+                                  otpCode.length != 6 ||
+                                  isCodeExpired
+                              ? null
+                              : () {
+                                  debugPrint('OTP Code: $otpCode');
+
+                                  debugPrint('Email: ${widget.email}');
+                                  context
+                                      .read<AuthCubit>()
+                                      .emailVerify(widget.email, otpCode);
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          child: isVerifying
+                              ? SizedBox(
+                                  width: 24.w,
+                                  height: 24.w,
+                                  child: CircularProgressIndicator(
+                                    color: theme.colorScheme.onPrimary,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : Text(
+                                  'verify'.tr(),
+                                  style: GoogleFonts.mali(
+                                    fontSize: 18.sp,
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
