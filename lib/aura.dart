@@ -1,20 +1,15 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:app_links/app_links.dart';
 import 'package:aura/core/themes/theme_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
-
 import 'core/di/service_locator.dart';
 import 'core/helpers/database/user_cache_helper.dart';
 import 'core/routing/app_router.dart';
 import 'core/themes/dark_theme.dart';
 import 'core/themes/light_theme.dart';
 import 'core/themes/theme_cubit.dart';
-import 'core/widgets/gradient_background.dart';
 
 class Aura extends StatefulWidget {
   const Aura({super.key});
@@ -92,56 +87,6 @@ class _AuraState extends State<Aura> {
           },
         );
       },
-    );
-  }
-}
-
-class NoInternetConnection extends StatelessWidget {
-  const NoInternetConnection({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GradientBackground(
-        child: ZoomInDown(
-          duration: const Duration(milliseconds: 500),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Lottie.asset(
-                'assets/offline.json',
-                width: 150.w,
-                height: 150.h,
-                fit: BoxFit.cover,
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'No internet connection'.tr(),
-                  style: GoogleFonts.sura(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).textTheme.titleLarge?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Please check your internet connection and try again'.tr(),
-                style: GoogleFonts.mali(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).textTheme.bodyMedium?.color,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

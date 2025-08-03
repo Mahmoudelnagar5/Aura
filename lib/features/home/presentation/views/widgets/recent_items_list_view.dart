@@ -111,14 +111,16 @@ class _RecentItemsListViewState extends State<RecentItemsListView> {
         } else if (state is RecentUploadsError) {
           return Center(
               child: Text(
-                  state.message.contains('null')
-                      ? 'No internet connection'.tr()
-                      : state.message,
-                  style: GoogleFonts.mali(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  )));
+            state.message.contains('null')
+                ? 'No internet connection'.tr()
+                : state.message,
+            style: GoogleFonts.mali(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            textAlign: TextAlign.center,
+          ));
         }
         return Center(
             child: Container(
