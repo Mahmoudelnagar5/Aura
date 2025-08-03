@@ -9,7 +9,6 @@ import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:aura/core/di/service_locator.dart';
 import 'package:aura/core/widgets/gradient_background.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:app_links/app_links.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({
@@ -23,44 +22,11 @@ class SplashViewBody extends StatefulWidget {
 class _SplashViewBodyState extends State<SplashViewBody> {
   late UserCacheHelper userCacheHelper;
   bool _isNavigating = false;
-  late final AppLinks _appLinks;
 
   @override
   void initState() {
     super.initState();
-    _appLinks = AppLinks();
     _initializeCacheHelper();
-    _setupDeepLinkHandler();
-  }
-
-  void _setupDeepLinkHandler() async {
-    // Handle incoming deep links
-    _appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        debugPrint('Deep link received: $uri');
-        _handleDeepLink(uri);
-      }
-    });
-
-    // Handle initial deep link
-    final Uri? initialLink = await _appLinks.getInitialLink();
-    if (initialLink != null) {
-      debugPrint('Initial deep link: $initialLink');
-      _handleDeepLink(initialLink);
-    }
-  }
-
-  void _handleDeepLink(Uri uri) async {
-    final token = uri.queryParameters['token'];
-    debugPrint("token $token");
-    if (token == null || token.isEmpty) {
-      debugPrint("No token found in deep link");
-      return;
-    }
-    await getIt<UserCacheHelper>().saveUserToken(token);
-    await getIt<UserCacheHelper>().setLoggedIn(true);
-    // Prefix path of route /auth/callback
-    AppRouter.router.go(AppRouter.homeView);
   }
 
   Future<void> _initializeCacheHelper() async {

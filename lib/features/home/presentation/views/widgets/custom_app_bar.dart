@@ -50,6 +50,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       height: 16,
                     ),
                     FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text(
                         'welcome_back'.tr(),
                         style: GoogleFonts.mali(
@@ -63,6 +64,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       height: 5,
                     ),
                     FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text(
                         userName,
                         style: GoogleFonts.sora(

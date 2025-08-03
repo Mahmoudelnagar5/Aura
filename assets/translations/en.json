@@ -109,5 +109,7 @@
     "theme_mode": "Theme Mode",
     "system_mode": "System",
     "light_mode": "Light",
-    "dark_mode": "Dark"
+    "dark_mode": "Dark",
+    "No internet connection": "No internet connection",
+    "Please check your internet connection and try again": "Please check your internet connection and try again"
 }

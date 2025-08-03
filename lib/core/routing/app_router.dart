@@ -69,18 +69,6 @@ abstract class AppRouter {
           transitionsBuilder: _transitionsBuilder,
         ),
       ),
-      // مسار استقبال التوكن من deep link
-      // GoRoute(
-      //   path: authCallback,
-      //   pageBuilder: (context, state) => CustomTransitionPage(
-      //     key: state.pageKey,
-      //     child: AuthCallbackScreen(
-      //       token: state.uri.queryParameters['token'],
-      //       provider: state.uri.queryParameters['provider'],
-      //     ),
-      //     transitionsBuilder: _transitionsBuilder,
-      //   ),
-      // ),
       GoRoute(
         path: '/otp-verification',
         pageBuilder: (context, state) => CustomTransitionPage(
