@@ -186,6 +186,34 @@ The root widget of the app.
 - 🔬 **Easier testing** – Business logic is decoupled from UI
 - 🧩 **Modularity** – Each feature is self-contained and scalable
 - ♻️ **Reusability** – Shared logic is centralized in `core/`
+---
+
+## 🧩 Backend Integration
+
+The **Aura** mobile application is backed by a powerful [**Laravel**](https://laravel.com/) API that ensures performance, security, and scalability. The backend is responsible for managing critical functionalities such as:
+
+### 🔐 Authentication & User Management
+- Secure email/password authentication
+- OAuth login with Google, GitHub, and Discord
+- Email verification and password reset
+- User profile updates and account deletion
+
+### 📂 Document Handling
+- Upload, store, rename, and delete PDF documents
+- Retrieve recent uploads and organize study materials
+
+### 🔗 API Services
+- RESTful APIs for smooth communication with the Flutter app
+- Well-structured endpoints with proper validation and error handling
+- Local storage and database support using Laravel Eloquent
+
+---
+
+📁 **Backend Repository**
+
+For full access to the backend source code, implementation details, and contribution guidelines, check out the repository:
+
+👉 [**Aura Laravel Backend**](https://github.com/Ammoor/Aura)
 
 
 ---
@@ -200,6 +228,9 @@ The root widget of the app.
 > ⏳ *Coming Soon*
 
 ---
+
+
+
 
 ## 🚀 Getting Started
 
