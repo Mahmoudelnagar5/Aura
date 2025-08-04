@@ -1,5 +1,5 @@
 # 🤖 Aura – AI-Powered Study Partner
-<img width="1484" height="829" alt="Image" src="https://github.com/user-attachments/assets/20bf8dad-709e-45b9-8a65-156c26256f9e" />
+<img width="1280" height="720" alt="Image" src="https://github.com/user-attachments/assets/6019216f-cd2e-48cc-8538-8bd83230bd99" />
 
 
 
