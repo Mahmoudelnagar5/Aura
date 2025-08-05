@@ -225,7 +225,8 @@ For full access to the backend source code, implementation details, and contribu
 
 ## 🎥 Demo
 
-> ⏳ *Coming Soon*
+> ⏯️ [Watch the Demo on YouTube](https://youtu.be/J4mzHPDqyvM)
+
 
 ---
 
