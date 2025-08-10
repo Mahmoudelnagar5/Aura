@@ -33,7 +33,7 @@ Future<void> main() async {
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('en'),
       child: DevicePreview(
-        enabled: false,
+        enabled: true,
         // enabled: !kReleaseMode, // Only show device preview in debug mode
         builder: (context) => BlocProvider(
           create: (_) => ThemeCubit(),

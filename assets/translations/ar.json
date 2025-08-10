@@ -111,5 +111,6 @@
     "light_mode": "فاتح",
     "dark_mode": "داكن",
     "No internet connection": "لا يوجد اتصال بالإنترنت",
-    "Please check your internet connection and try again": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى"
+    "Please check your internet connection and try again": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى",
+    "deleted_successfully": "تم الحذف بنجاح"
 }

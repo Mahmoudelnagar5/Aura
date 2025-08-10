@@ -55,7 +55,7 @@ class _AuraState extends State<Aura> {
     await getIt<UserCacheHelper>().saveUserToken(token);
     await getIt<UserCacheHelper>().setLoggedIn(true);
     // Prefix path of route /auth/callback
-    AppRouter.router.push(AppRouter.homeView);
+    // AppRouter.router.push(AppRouter.homeView);
   }
 
   @override

@@ -1,7 +1,14 @@
 import 'package:aura/core/di/service_locator.dart';
 import 'package:aura/core/helpers/database/user_cache_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
+
+import '../helpers/database/cache_helper.dart';
+import '../helpers/database/docs_cache_helper.dart';
+import '../helpers/database/summary_cache_helper.dart';
+import '../routing/app_router.dart';
 
 class ApiInterceptor extends Interceptor {
   @override
@@ -16,5 +23,24 @@ class ApiInterceptor extends Interceptor {
     }
 
     super.onRequest(options, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    final navigatorKey = GlobalKey<NavigatorState>();
+
+    // Handle unauthorized errors
+    if (err.response?.statusCode == 401) {
+      await getIt<UserCacheHelper>().clearUserData();
+      await DocsCacheHelper.clearDocs();
+      // Clear all summaries
+      await SummaryPrefs.clearAllSummaries();
+      await getIt<CacheHelper>().clearData();
+      // Navigate to onboarding view
+      debugPrint("Unauthorized error: ${err.message}");
+      navigatorKey.currentContext?.go(AppRouter.onBoardingView);
+    }
+
+    super.onError(err, handler);
   }
 }

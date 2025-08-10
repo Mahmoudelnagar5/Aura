@@ -31,6 +31,7 @@ class GeminiService {
         extractedText = extractedText.substring(0, maxLen);
         extractedText += '\n\n[NOTE: Document truncated due to length limit.]';
       }
+      debugPrint(extractedText);
 
       final prompt = _buildSystemPrompt(
         text: extractedText,
@@ -51,6 +52,7 @@ class GeminiService {
       if (e.toString().contains('400')) {
         return 'Error: Bad request to Gemini. The document may be empty, too large, or the prompt is malformed.';
       }
+      debugPrint(e.toString());
       return 'Error: Unable to summarize document with Gemini.';
     }
   }

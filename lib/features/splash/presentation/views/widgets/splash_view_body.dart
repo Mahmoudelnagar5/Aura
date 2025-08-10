@@ -128,12 +128,3 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     );
   }
 }
-
-    // if (!mounted) return; // ✅ هنا بردو نأمن
-
-    // if (uri.path.contains('/auth/callback')) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     debugPrint("token from deep link $token");
-    //     context.pushReplacement(AppRouter.homeView);
-    //   });
-    // }

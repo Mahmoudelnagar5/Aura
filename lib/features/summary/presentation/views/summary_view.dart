@@ -1,3 +1,4 @@
+import 'package:aura/core/helpers/functions/show_snake_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,6 +41,7 @@ class _SummaryViewState extends State<SummaryView> {
     await SummaryPrefs.removeSummary(index);
     setState(() {
       _summaries.removeAt(index);
+      showSnackBar(context, 'deleted_successfully'.tr(), Colors.green);
     });
   }
 
@@ -108,7 +110,7 @@ class _SummaryViewState extends State<SummaryView> {
                           },
                         ),
             ),
-            SizedBox(height: 55.h),
+            SizedBox(height: 5.h),
           ],
         ),
       ),
