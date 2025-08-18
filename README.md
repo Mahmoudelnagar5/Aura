@@ -217,6 +217,13 @@ For full access to the backend source code, implementation details, and contribu
 
 
 ---
+
+## 📥 Download
+You can download the latest APK of **Aura** from the link below:
+
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://drive.google.com/file/d/1MC-40oo6i0xJbhOoxywIm_A89vSTpPLU/view)
+
+---
 ## 📱 Screenshots
 
 > ⏳ *Coming Soon*
