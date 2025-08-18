@@ -232,7 +232,9 @@ You can download the latest APK of **Aura** from the link below:
 
 ## 🎥 Demo
 
-> ⏳ *Coming Soon*
+Check out how **Aura** works in action:
+
+[![Watch the Demo](https://img.youtube.com/vi/SUjbx3c-0-A/0.jpg)](https://youtu.be/SUjbx3c-0-A)
 
 ---
 
